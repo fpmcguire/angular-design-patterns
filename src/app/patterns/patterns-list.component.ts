@@ -1,12 +1,11 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgFor } from '@angular/common';
 import { PATTERNS, Pattern, PatternCategory } from './patterns.data';
 
 @Component({
   selector: 'app-patterns-list',
   standalone: true,
-  imports: [RouterModule, NgFor],
+  imports: [RouterModule],
   template: `
     <div class="patterns">
       <h2>Angular Design Patterns</h2>
@@ -25,30 +24,32 @@ import { PATTERNS, Pattern, PatternCategory } from './patterns.data';
           All
         </button>
 
+        @for (cat of categories; track cat) {
         <button
-          *ngFor="let cat of categories"
           type="button"
           class="chip"
           [class.chip--active]="selectedCategory === cat"
           (click)="selectCategory(cat)"
         >
+          {{ cat }}
         </button>
+        }
       </div>
-      }
-      </div>
+        }
 
-      <div class="patterns__grid">
-        <a
-          *ngFor="let pattern of filteredPatterns()"
-          class="pattern-card"
-          [routerLink]="['/patterns', pattern.id]"
-        >
-          <h3>{{ pattern.name }}</h3>
-          <p class="pattern-card__category">{{ pattern.category }}</p>
-          <p class="pattern-card__description">{{ pattern.shortDescription }}</p>
-        </a>
+        <div class="patterns__grid">
+          @for (pattern of filteredPatterns(); track pattern.id) {
+          <a
+            class="pattern-card"
+            [routerLink]="['/patterns', pattern.id]"
+          >
+            <h3>{{ pattern.name }}</h3>
+            <p class="pattern-card__category">{{ pattern.category }}</p>
+            <p class="pattern-card__description">{{ pattern.shortDescription }}</p>
+          </a>
+          }
+        </div>
       </div>
-    </div>
   `,
   styles: [`
     .patterns h2 {
