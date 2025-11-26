@@ -31,15 +31,15 @@ export const PATTERNS: Pattern[] = [
       'import { Component, EventEmitter, Input, Output } from "@angular/core";\n\n' +
       '@Component({\n' +
       '  selector: "app-user-list-container",\n' +
-      '  standalone: true,\n' +
-      '  imports: [UserListComponent],\n' +
-      '  template: `\n' +
-      '    <app-user-list\n' +
+      "  standalone: true,\n" +
+      "  imports: [UserListComponent],\n" +
+      "  template: `\n" +
+      "    <app-user-list\n" +
       '      [users]="users"\n' +
       '      (selectUser)="onSelect($event)">\n' +
-      '    </app-user-list>\n' +
-      '  `\n' +
-      '})\n' +
+      "    </app-user-list>\n" +
+      "  `\n" +
+      "})\n" +
       "export class UserListContainerComponent {\n" +
       '  users = ["Ana", "Bruno", "Carlos"];\n\n' +
       "  onSelect(user: string) {\n" +
@@ -139,11 +139,11 @@ export const PATTERNS: Pattern[] = [
   },
   {
     id: "structural-directive",
-    name: "Structural Directive Pattern",
+    name: "Structural Directive Pattern (*ngIf / *ngFor) – DEPRECATED",
     category: "Component & UI",
-    shortDescription: "Encapsulate DOM shape changes in custom directives.",
+    shortDescription: "DEPRECATED: classic structural directives like *ngIf / *ngFor.",
     description:
-      "Structural directives like *ngIf and *ngFor add or remove DOM parts; custom structural directives let you reuse complex visibility/branching logic.",
+      "DEPRECATED in favor of Angular's built-in control flow syntax (@if, @for, @switch): structural directives like *ngIf and *ngFor used to add/remove DOM parts, but modern Angular apps should migrate to the new control-flow blocks.",
     exampleTs:
       'import { Directive, Input, TemplateRef, ViewContainerRef } from "@angular/core";\n\n' +
       '@Directive({\n' +
@@ -170,6 +170,32 @@ export const PATTERNS: Pattern[] = [
       '<div *appIfAdmin="isAdmin">\n' +
       "  Only admins see this block.\n" +
       "</div>\n"
+  },
+  // NEW: modern control-flow pattern for @if / @else / @else if
+  {
+    id: "control-flow-if-else",
+    name: "Built-in Control Flow: @if / @else",
+    category: "Component & UI",
+    shortDescription: "Use @if, @else, and @else if blocks instead of *ngIf.",
+    description:
+      "Angular 17+ introduces built-in control flow where @if, @else if, and @else replace *ngIf for more readable, type-safe template branching without extra <ng-template> gymnastics.",
+    exampleTs:
+      'import { Component } from "@angular/core";\n\n' +
+      '@Component({\n' +
+      '  selector: "app-login-message",\n' +
+      "  standalone: true,\n" +
+      "  template: `\n" +
+      "    @if (isLoggedIn) {\n" +
+      "      <p>Welcome back, {{ userName }}!</p>\n" +
+      "    } @else {\n" +
+      "      <p>Please log in to continue.</p>\n" +
+      "    }\n" +
+      "  `\n" +
+      "})\n" +
+      "export class LoginMessageComponent {\n" +
+      "  isLoggedIn = true;\n" +
+      '  userName = "Ana";\n' +
+      "}\n"
   },
   {
     id: "attribute-directive",
@@ -468,7 +494,7 @@ export const PATTERNS: Pattern[] = [
       'import { Injectable } from "@angular/core";\n' +
       'import { HttpClient } from "@angular/common/http";\n' +
       'import { Observable } from "rxjs";\n' +
-      'import { Component, inject } from "@angular/core";\n' +
+      'import { Component } from "@angular/core";\n' +
       'import { NgIf } from "@angular/common";\n\n' +
       "interface Profile {\n" +
       "  name: string;\n" +
@@ -641,12 +667,12 @@ export const PATTERNS: Pattern[] = [
       "    this.fetchItems().subscribe(items => (this.items = items));\n" +
       "  }\n" +
       "}\n\n" +
-      "interface User {\n" +
+      "interface UserBase {\n" +
       "  id: number;\n" +
       "  name: string;\n" +
       "}\n\n" +
       '@Component({\n' +
-      '  selector: "app-user-list",\n' +
+      '  selector: "app-user-list-base",\n' +
       "  standalone: true,\n" +
       "  imports: [NgFor],\n" +
       "  template: `\n" +
@@ -655,12 +681,12 @@ export const PATTERNS: Pattern[] = [
       "    </ul>\n" +
       "  `\n" +
       "})\n" +
-      "export class UserListComponent extends ListBaseComponent<User> {\n" +
+      "export class UserListBaseComponent extends ListBaseComponent<UserBase> {\n" +
       "  constructor(private http: HttpClient) {\n" +
       "    super();\n" +
       "  }\n\n" +
-      "  fetchItems(): Observable<User[]> {\n" +
-      "    return this.http.get<User[]>(\"/api/users\");\n" +
+      "  fetchItems(): Observable<UserBase[]> {\n" +
+      "    return this.http.get<UserBase[]>(\"/api/users\");\n" +
       "  }\n" +
       "}\n"
   },
@@ -767,11 +793,11 @@ export const PATTERNS: Pattern[] = [
   },
   {
     id: "trackby-ngfor",
-    name: "trackBy for *ngFor",
+    name: "trackBy for *ngFor – DEPRECATED",
     category: "Rendering & Performance",
-    shortDescription: "Avoid recreating DOM elements unnecessarily.",
+    shortDescription: "DEPRECATED: use @for with track expressions instead of *ngFor + trackBy.",
     description:
-      "Providing a trackBy function for *ngFor lets Angular reuse DOM elements when array items move or update.",
+      "DEPRECATED in modern Angular: trackBy with *ngFor was the classic way to minimize DOM churn, but Angular 17+ encourages @for with an inline track expression for better performance and readability.",
     exampleTs:
       'import { Component } from "@angular/core";\n' +
       'import { NgFor } from "@angular/common";\n\n' +
@@ -799,6 +825,36 @@ export const PATTERNS: Pattern[] = [
       "  }\n" +
       "}\n"
   },
+  // NEW: modern @for control-flow pattern with track expression
+  {
+    id: "control-flow-for",
+    name: "Built-in Control Flow: @for",
+    category: "Rendering & Performance",
+    shortDescription: "Use @for with track expressions instead of *ngFor / trackBy.",
+    description:
+      "Angular's built-in @for block replaces *ngFor and accepts an inline track expression, offering a faster diffing algorithm and cleaner syntax.",
+    exampleTs:
+      'import { Component } from "@angular/core";\n\n' +
+      "interface Item {\n" +
+      "  id: number;\n" +
+      "  name: string;\n" +
+      "}\n\n" +
+      '@Component({\n' +
+      '  selector: "app-items-for",\n' +
+      "  standalone: true,\n" +
+      "  template: `\n" +
+      "    @for (item of items; track item.id) {\n" +
+      "      <div>{{ item.name }}</div>\n" +
+      "    }\n" +
+      "  `\n" +
+      "})\n" +
+      "export class ItemsForComponent {\n" +
+      "  items: Item[] = [\n" +
+      "    { id: 1, name: \"One\" },\n" +
+      "    { id: 2, name: \"Two\" }\n" +
+      "  ];\n" +
+      "}\n"
+  },
   {
     id: "virtual-scroll-cdk",
     name: "Virtual Scrolling (CDK)",
@@ -808,12 +864,11 @@ export const PATTERNS: Pattern[] = [
       "Angular CDK virtual scroll shows just the visible portion of a long list to reduce DOM size.",
     exampleTs:
       'import { Component } from "@angular/core";\n' +
-      'import { ScrollingModule } from "@angular/cdk/scrolling";\n' +
-      'import { NgFor } from "@angular/common";\n\n' +
+      'import { ScrollingModule } from "@angular/cdk/scrolling";\n\n' +
       '@Component({\n' +
       '  selector: "app-virtual-list",\n' +
       "  standalone: true,\n" +
-      "  imports: [ScrollingModule, NgFor],\n" +
+      "  imports: [ScrollingModule],\n" +
       "  template: `\n" +
       '    <cdk-virtual-scroll-viewport itemSize="50" style="height: 300px">\n' +
       "      <div *cdkVirtualFor=\"let item of items\">\n" +
@@ -915,18 +970,18 @@ export const PATTERNS: Pattern[] = [
       'import { Injectable } from "@angular/core";\n' +
       'import { HttpClient } from "@angular/common/http";\n' +
       'import { Observable } from "rxjs";\n\n' +
-      "export interface Product {\n" +
+      "export interface ProductRepoModel {\n" +
       "  id: string;\n" +
       "  name: string;\n" +
       "}\n\n" +
       "@Injectable({ providedIn: \"root\" })\n" +
       "export class ProductRepository {\n" +
       "  constructor(private http: HttpClient) {}\n\n" +
-      "  findAll(): Observable<Product[]> {\n" +
-      "    return this.http.get<Product[]>(\"/api/products\");\n" +
+      "  findAll(): Observable<ProductRepoModel[]> {\n" +
+      "    return this.http.get<ProductRepoModel[]>(\"/api/products\");\n" +
       "  }\n\n" +
-      "  findById(id: string): Observable<Product> {\n" +
-      "    return this.http.get<Product>(`/api/products/${id}`);\n" +
+      "  findById(id: string): Observable<ProductRepoModel> {\n" +
+      "    return this.http.get<ProductRepoModel>(`/api/products/${id}`);\n" +
       "  }\n" +
       "}\n"
   },
