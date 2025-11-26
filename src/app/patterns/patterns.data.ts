@@ -178,7 +178,7 @@ export const PATTERNS: Pattern[] = [
     category: "Component & UI",
     shortDescription: "Use @if, @else, and @else if blocks instead of *ngIf.",
     description:
-      "Angular 17+ introduces built-in control flow where @if, @else if, and @else replace *ngIf for more readable, type-safe template branching without extra <ng-template> gymnastics.",
+      "Angular 21 introduces built-in control flow where @if, @else if, and @else replace *ngIf for more readable, type-safe template branching without extra <ng-template> gymnastics.",
     exampleTs:
       'import { Component } from "@angular/core";\n\n' +
       '@Component({\n' +
@@ -797,7 +797,7 @@ export const PATTERNS: Pattern[] = [
     category: "Rendering & Performance",
     shortDescription: "DEPRECATED: use @for with track expressions instead of *ngFor + trackBy.",
     description:
-      "DEPRECATED in modern Angular: trackBy with *ngFor was the classic way to minimize DOM churn, but Angular 17+ encourages @for with an inline track expression for better performance and readability.",
+      "DEPRECATED in modern Angular: trackBy with *ngFor was the classic way to minimize DOM churn, but Angular 21 encourages @for with an inline track expression for better performance and readability.",
     exampleTs:
       'import { Component } from "@angular/core";\n' +
       'import { NgFor } from "@angular/common";\n\n' +

@@ -8,8 +8,8 @@ import { RouterModule } from '@angular/router';
   template: `
     <div class="app-shell">
       <header class="app-header">
-        <h1>Angular Design Patterns</h1>
-        <span class="app-header__subtitle">Angular 21 · Jest · Frontend & UI patterns catalog</span>
+        <h1>Angular Design Patterns and Principles</h1>
+        <span class="app-header__subtitle">Angular 21 · Frontend & UI patterns and principles catalog</span>
       </header>
 
       <main class="app-main">
