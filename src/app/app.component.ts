@@ -19,7 +19,15 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            🧭 All Patterns
+            🧩 Angular Patterns
+          </a>
+
+          <a
+            routerLink="/classic"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            📚 Classic GoF Patterns
           </a>
         </nav>
 
@@ -119,4 +127,4 @@ import { RouterModule } from '@angular/router';
     }
   `]
 })
-export class AppComponent {}
+export class AppComponent { }
