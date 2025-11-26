@@ -8,7 +8,7 @@ import { SOLID_PRINCIPLES, SolidPrinciple } from './solid-principles.data';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <ng-container *ngIf="principle(); else notFound">
+    @if (principle()) {
       <a routerLink="/solid" class="back-link">← Back to S.O.L.I.D.</a>
 
       <header class="detail-header">
@@ -22,25 +22,29 @@ import { SOLID_PRINCIPLES, SolidPrinciple } from './solid-principles.data';
         {{ principle()!.description }}
       </p>
 
-      <section *ngIf="principle()!.exampleTs || principle()!.exampleHtml" class="detail-examples">
-        <h3>Angular / TypeScript Example</h3>
+      @if (principle()!.exampleTs || principle()!.exampleHtml) {
+        <section class="detail-examples">
+          <h3>Angular / TypeScript Example</h3>
 
-        <div *ngIf="principle()!.exampleTs" class="code-block">
-          <div class="code-block__label">TypeScript</div>
-          <pre><code>{{ principle()!.exampleTs }}</code></pre>
-        </div>
+          @if (principle()!.exampleTs) {
+            <div class="code-block">
+              <div class="code-block__label">TypeScript</div>
+              <pre><code>{{ principle()!.exampleTs }}</code></pre>
+            </div>
+          }
 
-        <div *ngIf="principle()!.exampleHtml" class="code-block">
-          <div class="code-block__label">Template</div>
-          <pre><code>{{ principle()!.exampleHtml }}</code></pre>
-        </div>
-      </section>
-    </ng-container>
-
-    <ng-template #notFound>
+          @if (principle()!.exampleHtml) {
+            <div class="code-block">
+              <div class="code-block__label">Template</div>
+              <pre><code>{{ principle()!.exampleHtml }}</code></pre>
+            </div>
+          }
+        </section>
+      }
+    } @else {
       <a routerLink="/solid" class="back-link">← Back to S.O.L.I.D.</a>
       <p>Principle not found.</p>
-    </ng-template>
+    }
   `,
   styles: [`
     .back-link {

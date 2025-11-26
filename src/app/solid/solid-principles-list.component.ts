@@ -1,12 +1,11 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgFor } from '@angular/common';
 import { SOLID_PRINCIPLES, SolidPrinciple, SolidCategory } from './solid-principles.data';
 
 @Component({
   selector: 'app-solid-principles-list',
   standalone: true,
-  imports: [RouterModule, NgFor],
+  imports: [RouterModule],
   template: `
     <div class="patterns">
       <h2>S.O.L.I.D. Principles</h2>
@@ -24,27 +23,29 @@ import { SOLID_PRINCIPLES, SolidPrinciple, SolidCategory } from './solid-princip
           All
         </button>
 
-        <button
-          *ngFor="let cat of categories"
-          type="button"
-          class="chip"
-          [class.chip--active]="selectedCategory === cat"
-          (click)="selectCategory(cat)"
-        >
-          {{ cat }}
-        </button>
+        @for (cat of categories; track cat) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="selectedCategory === cat"
+            (click)="selectCategory(cat)"
+          >
+            {{ cat }}
+          </button>
+        }
       </div>
 
       <div class="patterns__grid">
-        <a
-          *ngFor="let p of filtered()"
-          class="pattern-card"
-          [routerLink]="['/solid', p.id]"
-        >
-          <h3>{{ p.name }}</h3>
-          <p class="pattern-card__category">({{ p.letter }}) {{ p.category }}</p>
-          <p class="pattern-card__description">{{ p.shortDescription }}</p>
-        </a>
+        @for (p of filtered(); track p.id) {
+          <a
+            class="pattern-card"
+            [routerLink]="['/solid', p.id]"
+          >
+            <h3>{{ p.name }}</h3>
+            <p class="pattern-card__category">({{ p.letter }}) {{ p.category }}</p>
+            <p class="pattern-card__description">{{ p.shortDescription }}</p>
+          </a>
+        }
       </div>
     </div>
   `,

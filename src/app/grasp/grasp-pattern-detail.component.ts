@@ -8,7 +8,7 @@ import { GRASP_PATTERNS, GraspPattern } from './grasp-patterns.data';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <ng-container *ngIf="pattern(); else notFound">
+    @if (pattern()) {
       <a routerLink="/grasp" class="back-link">← Back to GRASP</a>
 
       <header class="detail-header">
@@ -20,25 +20,29 @@ import { GRASP_PATTERNS, GraspPattern } from './grasp-patterns.data';
         {{ pattern()!.description }}
       </p>
 
-      <section *ngIf="pattern()!.exampleTs || pattern()!.exampleHtml" class="detail-examples">
-        <h3>Angular / TypeScript Example</h3>
+      @if (pattern()!.exampleTs || pattern()!.exampleHtml) {
+        <section class="detail-examples">
+          <h3>Angular / TypeScript Example</h3>
 
-        <div *ngIf="pattern()!.exampleTs" class="code-block">
-          <div class="code-block__label">TypeScript</div>
-          <pre><code>{{ pattern()!.exampleTs }}</code></pre>
-        </div>
+          @if (pattern()!.exampleTs) {
+            <div class="code-block">
+              <div class="code-block__label">TypeScript</div>
+              <pre><code>{{ pattern()!.exampleTs }}</code></pre>
+            </div>
+          }
 
-        <div *ngIf="pattern()!.exampleHtml" class="code-block">
-          <div class="code-block__label">Template</div>
-          <pre><code>{{ pattern()!.exampleHtml }}</code></pre>
-        </div>
-      </section>
-    </ng-container>
-
-    <ng-template #notFound>
+          @if (pattern()!.exampleHtml) {
+            <div class="code-block">
+              <div class="code-block__label">Template</div>
+              <pre><code>{{ pattern()!.exampleHtml }}</code></pre>
+            </div>
+          }
+        </section>
+      }
+    } @else {
       <a routerLink="/grasp" class="back-link">← Back to GRASP</a>
       <p>Pattern not found.</p>
-    </ng-template>
+    }
   `,
   styles: [`
     .back-link {

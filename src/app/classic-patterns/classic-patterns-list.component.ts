@@ -1,12 +1,11 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgFor } from '@angular/common';
 import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './classic-patterns.data';
 
 @Component({
   selector: 'app-classic-patterns-list',
   standalone: true,
-  imports: [RouterModule, NgFor],
+  imports: [RouterModule],
   template: `
     <div class="patterns">
       <h2>Classic Design Patterns (GoF)</h2>
@@ -25,27 +24,29 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
           All
         </button>
 
-        <button
-          *ngFor="let cat of categories"
-          type="button"
-          class="chip"
-          [class.chip--active]="selectedCategory === cat"
-          (click)="selectCategory(cat)"
-        >
-          {{ cat }}
-        </button>
+        @for (cat of categories; track cat) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="selectedCategory === cat"
+            (click)="selectCategory(cat)"
+          >
+            {{ cat }}
+          </button>
+        }
       </div>
 
       <div class="patterns__grid">
-        <a
-          *ngFor="let pattern of filteredPatterns()"
-          class="pattern-card"
-          [routerLink]="['/classic', pattern.id]"
-        >
-          <h3>{{ pattern.name }}</h3>
-          <p class="pattern-card__category">{{ pattern.category }}</p>
-          <p class="pattern-card__description">{{ pattern.shortDescription }}</p>
-        </a>
+        @for (pattern of filteredPatterns(); track pattern.id) {
+          <a
+            class="pattern-card"
+            [routerLink]="['/classic', pattern.id]"
+          >
+            <h3>{{ pattern.name }}</h3>
+            <p class="pattern-card__category">{{ pattern.category }}</p>
+            <p class="pattern-card__description">{{ pattern.shortDescription }}</p>
+          </a>
+        }
       </div>
     </div>
   `,

@@ -1,12 +1,11 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgFor } from '@angular/common';
 import { GRASP_PATTERNS, GraspPattern, GraspCategory } from './grasp-patterns.data';
 
 @Component({
   selector: 'app-grasp-patterns-list',
   standalone: true,
-  imports: [RouterModule, NgFor],
+  imports: [RouterModule],
   template: `
     <div class="patterns">
       <h2>GRASP Principles</h2>
@@ -24,27 +23,29 @@ import { GRASP_PATTERNS, GraspPattern, GraspCategory } from './grasp-patterns.da
           All
         </button>
 
-        <button
-          *ngFor="let cat of categories"
-          type="button"
-          class="chip"
-          [class.chip--active]="selectedCategory === cat"
-          (click)="selectCategory(cat)"
-        >
-          {{ cat }}
-        </button>
+        @for (cat of categories; track cat) {
+          <button
+            type="button"
+            class="chip"
+            [class.chip--active]="selectedCategory === cat"
+            (click)="selectCategory(cat)"
+          >
+            {{ cat }}
+          </button>
+        }
       </div>
 
       <div class="patterns__grid">
-        <a
-          *ngFor="let p of filtered()"
-          class="pattern-card"
-          [routerLink]="['/grasp', p.id]"
-        >
-          <h3>{{ p.name }}</h3>
-          <p class="pattern-card__category">{{ p.category }}</p>
-          <p class="pattern-card__description">{{ p.shortDescription }}</p>
-        </a>
+        @for (p of filtered(); track p.id) {
+          <a
+            class="pattern-card"
+            [routerLink]="['/grasp', p.id]"
+          >
+            <h3>{{ p.name }}</h3>
+            <p class="pattern-card__category">{{ p.category }}</p>
+            <p class="pattern-card__description">{{ p.shortDescription }}</p>
+          </a>
+        }
       </div>
     </div>
   `,
