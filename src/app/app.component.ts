@@ -27,7 +27,23 @@ import { RouterModule } from '@angular/router';
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            📚 Classic GoF Patterns
+            📚 Classic GoF
+          </a>
+
+          <a
+            routerLink="/solid"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            🧱 S.O.L.I.D.
+          </a>
+
+          <a
+            routerLink="/grasp"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            🧠 GRASP
           </a>
         </nav>
 

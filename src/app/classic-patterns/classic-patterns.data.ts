@@ -1,5 +1,3 @@
-// src/app/classic-patterns/classic-patterns.data.ts
-
 export type ClassicPatternCategory = 'Creational' | 'Structural' | 'Behavioral';
 
 export interface ClassicPattern {

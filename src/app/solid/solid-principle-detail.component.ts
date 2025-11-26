@@ -1,56 +1,45 @@
-// src/app/classic-patterns/classic-pattern-detail.component.ts
-
 import { Component, computed, signal, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CLASSIC_PATTERNS, ClassicPattern } from './classic-patterns.data';
+import { SOLID_PRINCIPLES, SolidPrinciple } from './solid-principles.data';
 
 @Component({
-  selector: 'app-classic-pattern-detail',
+  selector: 'app-solid-principle-detail',
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <ng-container *ngIf="pattern(); else notFound">
-      <a routerLink="/classic" class="back-link">← Back to classic patterns</a>
+    <ng-container *ngIf="principle(); else notFound">
+      <a routerLink="/solid" class="back-link">← Back to S.O.L.I.D.</a>
 
       <header class="detail-header">
-        <h2>{{ pattern()!.name }}</h2>
-        <span class="detail-header__category">{{ pattern()!.category }}</span>
+        <h2>{{ principle()!.name }}</h2>
+        <span class="detail-header__category">
+          ({{ principle()!.letter }}) {{ principle()!.category }}
+        </span>
       </header>
 
       <p class="detail-description">
-        {{ pattern()!.description }}
+        {{ principle()!.description }}
       </p>
 
-      <section *ngIf="pattern()!.exampleTs || pattern()!.exampleHtml" class="detail-examples">
+      <section *ngIf="principle()!.exampleTs || principle()!.exampleHtml" class="detail-examples">
         <h3>Angular / TypeScript Example</h3>
 
-        <div *ngIf="pattern()!.exampleTs" class="code-block">
+        <div *ngIf="principle()!.exampleTs" class="code-block">
           <div class="code-block__label">TypeScript</div>
-          <pre><code>{{ pattern()!.exampleTs }}</code></pre>
+          <pre><code>{{ principle()!.exampleTs }}</code></pre>
         </div>
 
-        <div *ngIf="pattern()!.exampleHtml" class="code-block">
+        <div *ngIf="principle()!.exampleHtml" class="code-block">
           <div class="code-block__label">Template</div>
-          <pre><code>{{ pattern()!.exampleHtml }}</code></pre>
+          <pre><code>{{ principle()!.exampleHtml }}</code></pre>
         </div>
-
-        <p class="hint">
-          Copy this into a standalone component, service, or module to experiment with the pattern.
-        </p>
-      </section>
-
-      <section *ngIf="!pattern()!.exampleTs && !pattern()!.exampleHtml" class="detail-examples">
-        <p class="hint">
-          Example snippet not yet added. You can extend this catalog via
-          <code>classic-patterns.data.ts</code>.
-        </p>
       </section>
     </ng-container>
 
     <ng-template #notFound>
-      <a routerLink="/classic" class="back-link">← Back to classic patterns</a>
-      <p>Pattern not found.</p>
+      <a routerLink="/solid" class="back-link">← Back to S.O.L.I.D.</a>
+      <p>Principle not found.</p>
     </ng-template>
   `,
   styles: [`
@@ -61,11 +50,9 @@ import { CLASSIC_PATTERNS, ClassicPattern } from './classic-patterns.data';
       color: #4b5563;
       text-decoration: none;
     }
-
     .back-link:hover {
       text-decoration: underline;
     }
-
     .detail-header {
       display: flex;
       flex-wrap: wrap;
@@ -73,31 +60,26 @@ import { CLASSIC_PATTERNS, ClassicPattern } from './classic-patterns.data';
       gap: 0.5rem;
       margin-bottom: 0.25rem;
     }
-
     .detail-header h2 {
       margin: 0;
       font-size: 1.5rem;
     }
-
     .detail-header__category {
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: #9ca3af;
     }
-
     .detail-description {
       margin: 0 0 1.25rem;
       max-width: 48rem;
       color: #4b5563;
       line-height: 1.4;
     }
-
     .detail-examples h3 {
       margin-top: 0;
       font-size: 1.1rem;
     }
-
     .code-block {
       margin-bottom: 0.75rem;
       border-radius: 0.75rem;
@@ -107,7 +89,6 @@ import { CLASSIC_PATTERNS, ClassicPattern } from './classic-patterns.data';
       overflow: auto;
       box-shadow: 0 1px 4px rgba(15,23,42,0.4);
     }
-
     .code-block__label {
       font-size: 0.75rem;
       padding: 0.35rem 0.75rem;
@@ -117,7 +98,6 @@ import { CLASSIC_PATTERNS, ClassicPattern } from './classic-patterns.data';
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
-
     pre {
       margin: 0;
       padding: 0.7rem 0.9rem;
@@ -126,23 +106,16 @@ import { CLASSIC_PATTERNS, ClassicPattern } from './classic-patterns.data';
       line-height: 1.5;
       white-space: pre-wrap;
     }
-
-    .hint {
-      margin-top: 0.25rem;
-      font-size: 0.8rem;
-      color: #6b7280;
-    }
   `]
 })
-export class ClassicPatternDetailComponent {
+export class SolidPrincipleDetailComponent {
   private readonly route = inject(ActivatedRoute);
-  private readonly patternSignal = signal<ClassicPattern | null>(null);
-
-  readonly pattern = computed(() => this.patternSignal());
+  private readonly principleSignal = signal<SolidPrinciple | null>(null);
+  readonly principle = computed(() => this.principleSignal());
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    const found = CLASSIC_PATTERNS.find(p => p.id === id) ?? null;
-    this.patternSignal.set(found);
+    const found = SOLID_PRINCIPLES.find(p => p.id === id) ?? null;
+    this.principleSignal.set(found);
   }
 }

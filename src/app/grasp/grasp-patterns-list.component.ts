@@ -1,18 +1,17 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor } from '@angular/common';
-import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './classic-patterns.data';
+import { GRASP_PATTERNS, GraspPattern, GraspCategory } from './grasp-patterns.data';
 
 @Component({
-  selector: 'app-classic-patterns-list',
+  selector: 'app-grasp-patterns-list',
   standalone: true,
   imports: [RouterModule, NgFor],
   template: `
     <div class="patterns">
-      <h2>Classic Design Patterns (GoF)</h2>
+      <h2>GRASP Principles</h2>
       <p class="patterns__intro">
-        A catalog of classic object-oriented design patterns (Singleton, Factory, Strategy, etc.),
-        shown with Angular & TypeScript examples.
+        General Responsibility Assignment Software Patterns (GRASP) shown with Angular services and components.
       </p>
 
       <div class="patterns__filters">
@@ -38,13 +37,13 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
 
       <div class="patterns__grid">
         <a
-          *ngFor="let pattern of filteredPatterns()"
+          *ngFor="let p of filtered()"
           class="pattern-card"
-          [routerLink]="['/classic', pattern.id]"
+          [routerLink]="['/grasp', p.id]"
         >
-          <h3>{{ pattern.name }}</h3>
-          <p class="pattern-card__category">{{ pattern.category }}</p>
-          <p class="pattern-card__description">{{ pattern.shortDescription }}</p>
+          <h3>{{ p.name }}</h3>
+          <p class="pattern-card__category">{{ p.category }}</p>
+          <p class="pattern-card__description">{{ p.shortDescription }}</p>
         </a>
       </div>
     </div>
@@ -54,20 +53,17 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
       margin-top: 0;
       font-size: 1.4rem;
     }
-
     .patterns__intro {
       margin: 0.4rem 0 1rem;
       color: #4b5563;
       max-width: 46rem;
     }
-
     .patterns__filters {
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
       margin-bottom: 1rem;
     }
-
     .chip {
       border: 1px solid #d1d5db;
       border-radius: 999px;
@@ -78,20 +74,17 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
       color: #374151;
       transition: background 0.15s, color 0.15s, border-color 0.15s;
     }
-
     .chip--active {
-      background: #60a5fa;
-      color: #0f172a;
-      border-color: #60a5fa;
+      background: #fbbf24;
+      color: #78350f;
+      border-color: #fbbf24;
       font-weight: 600;
     }
-
     .patterns__grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 0.75rem;
     }
-
     .pattern-card {
       display: block;
       padding: 0.9rem 1rem;
@@ -103,18 +96,15 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
       color: inherit;
       transition: transform 0.07s ease, box-shadow 0.07s ease, border-color 0.07s ease;
     }
-
     .pattern-card:hover {
       transform: translateY(-1px);
-      border-color: #bfdbfe;
+      border-color: #fed7aa;
       box-shadow: 0 6px 16px rgba(15,23,42,0.12);
     }
-
     .pattern-card h3 {
       margin: 0 0 0.3rem;
       font-size: 1rem;
     }
-
     .pattern-card__category {
       margin: 0;
       font-size: 0.75rem;
@@ -122,7 +112,6 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
       letter-spacing: 0.05em;
       color: #9ca3af;
     }
-
     .pattern-card__description {
       margin: 0.35rem 0 0;
       font-size: 0.86rem;
@@ -130,24 +119,24 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
     }
   `]
 })
-export class ClassicPatternsListComponent {
-  readonly patterns = CLASSIC_PATTERNS;
-  readonly categories: ClassicPatternCategory[] = Array.from(
+export class GraspPatternsListComponent {
+  readonly patterns = GRASP_PATTERNS;
+  readonly categories: GraspCategory[] = Array.from(
     new Set(this.patterns.map(p => p.category))
   );
 
-  private readonly selectedCategorySignal = signal<ClassicPatternCategory | null>(null);
-  readonly filteredPatterns = computed<ClassicPattern[]>(() => {
+  private readonly selectedCategorySignal = signal<GraspCategory | null>(null);
+  readonly filtered = computed<GraspPattern[]>(() => {
     const cat = this.selectedCategorySignal();
     if (!cat) return this.patterns;
     return this.patterns.filter(p => p.category === cat);
   });
 
-  get selectedCategory(): ClassicPatternCategory | null {
+  get selectedCategory(): GraspCategory | null {
     return this.selectedCategorySignal();
   }
 
-  selectCategory(cat: ClassicPatternCategory | null) {
+  selectCategory(cat: GraspCategory | null) {
     this.selectedCategorySignal.set(cat);
   }
 }
