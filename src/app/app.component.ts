@@ -14,37 +14,47 @@ import { RouterModule } from '@angular/router';
 
       <main class="app-main">
         <nav class="sidebar">
-          <a
-            routerLink="/patterns"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
+          <a routerLink="/patterns" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             🧩 Angular Patterns
           </a>
 
-          <a
-            routerLink="/classic"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
+          <a routerLink="/classic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             📚 Classic GoF
           </a>
 
-          <a
-            routerLink="/solid"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
+          <a routerLink="/solid" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             🧱 S.O.L.I.D.
           </a>
 
-          <a
-            routerLink="/grasp"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
+          <a routerLink="/grasp" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             🧠 GRASP
           </a>
+
+          <a routerLink="/clean-code" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            ✏️ Clean Code
+          </a>
+
+          <a routerLink="/frontend-architecture" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            🏗️ FE Architecture
+          </a>
+
+          <a routerLink="/reactive" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            🔄 Reactive
+          </a>
+
+          <!-- // ToDo:
+          <a routerLink="/testing" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            ✅ Testing
+          </a>
+
+          <a routerLink="/ux-api" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            🎯 UX & API
+          </a>
+
+          <a routerLink="/maintainability" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            🧩 Maintainability
+          </a>
+          -->
         </nav>
 
         <section class="content">
@@ -53,7 +63,7 @@ import { RouterModule } from '@angular/router';
       </main>
 
       <footer class="app-footer">
-        <span>Angular 21 · Jest · Design Patterns Demo</span>
+        <span>Angular 21 · Design Patterns and Principles | Frank McGuire - 2025</span>
       </footer>
     </div>
   `,
