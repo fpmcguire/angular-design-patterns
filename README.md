@@ -23,7 +23,7 @@ ng generate component component-name
 For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
 ```bash
-ng generate --help
+ng generate --help`
 ```
 
 ## Building
@@ -34,11 +34,11 @@ To build the project run:
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This will compile your project and store the build artifacts in the dist/ directory. By default, the production build optimizes your application for performance and speed.
 
 ## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+To execute unit tests with the Karma test runner, use:
 
 ```bash
 ng test
@@ -54,6 +54,64 @@ ng e2e
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+---
+
+## 🚀 Deployment to inMotion Hosting (Static Site)
+
+inMotion Hosting shared servers run **Node.js 10**, which is not compatible with Angular 21’s SSR mode.  
+To deploy successfully, the application must be built as a **fully static SPA** instead of SSR.
+
+### ✔ 1. Update angular.json to disable SSR
+
+```
+"outputMode": "static"
+```
+
+### ✔ 2. Build for production
+
+```bash
+ng build --configuration=production
+```
+
+### ✔ 3. Upload static files to public_html/
+
+Upload:
+
+```
+dist/angular-design-patterns/browser/
+```
+
+### ✔ 4. Add .htaccess for routing
+
+```
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+```
+
+---
+
+## 🔄 Automated Deployment Using GitHub Actions (Tag-based Deploy)
+
+This project supports automated deployment to inMotion Hosting when a **tagged release** is pushed.
+
+Add this file at:
+
+```
+.github/workflows/deploy.yml
+```
+
+### Trigger: When pushing a tag like v1.0.0
+
+See deployment script below in separate download file.
+
+---
+
 ## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+See the Angular CLI documentation at: https://angular.dev/tools/cli
