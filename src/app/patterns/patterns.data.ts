@@ -51,7 +51,7 @@ export const PATTERNS: Pattern[] = [
       "  standalone: true,\n" +
       "  template: `\n" +
       "    <ul>\n" +
-      '      <li *ngFor="let u of users" (click)="selectUser.emit(u)">\n' +
+      '      <li @for="let u of users" (click)="selectUser.emit(u)">\n' +
       "        {{ u }}\n" +
       "      </li>\n" +
       "    </ul>\n" +
@@ -138,6 +138,7 @@ export const PATTERNS: Pattern[] = [
       "}\n"
   },
   {
+    /// ToDo: describe use of custom directives
     id: "structural-directive",
     name: "Structural Directive Pattern (*ngIf / *ngFor) – DEPRECATED",
     category: "Component & UI",
@@ -273,7 +274,7 @@ export const PATTERNS: Pattern[] = [
     exampleHtml:
       '<div appDropdownLogic #dd="dropdown">\n' +
       '  <button (click)="dd.toggle()">Toggle</button>\n' +
-      "  <div *ngIf=\"dd.isOpen()\">\n" +
+      "  <div @if=\"dd.isOpen()\">\n" +
       "    Projected dropdown content...\n" +
       "  </div>\n" +
       "</div>\n"
@@ -418,13 +419,12 @@ export const PATTERNS: Pattern[] = [
       '@Component({\n' +
       '  selector: "app-todos",\n' +
       "  standalone: true,\n" +
-      "  imports: [NgFor],\n" +
       "  providers: [TodosStore],\n" +
       "  template: `\n" +
       "    <input #t />\n" +
       "    <button (click)=\"store.addTodo(t.value)\">Add</button>\n" +
       "    <ul>\n" +
-      "      <li *ngFor=\"let todo of store.todos$ | async\">\n" +
+      "      <li @for=\"let todo of store.todos$ | async\">\n" +
       "        {{ todo }}\n" +
       "      </li>\n" +
       "    </ul>\n" +
@@ -511,7 +511,7 @@ export const PATTERNS: Pattern[] = [
       "  imports: [NgIf],\n" +
       "  providers: [ProfileViewModel],\n" +
       "  template: `\n" +
-      "    <ng-container *ngIf=\"vm.profile$ | async as p\">\n" +
+      "    <ng-container @if=\"vm.profile$ | async as p\">\n" +
       "      <h2>{{ p.name }}</h2>\n" +
       "      <p>{{ p.email }}</p>\n" +
       "    </ng-container>\n" +
@@ -674,10 +674,9 @@ export const PATTERNS: Pattern[] = [
       '@Component({\n' +
       '  selector: "app-user-list-base",\n' +
       "  standalone: true,\n" +
-      "  imports: [NgFor],\n" +
       "  template: `\n" +
       "    <ul>\n" +
-      "      <li *ngFor=\"let u of items\">{{ u.name }}</li>\n" +
+      "      <li @for=\"let u of items\">{{ u.name }}</li>\n" +
       "    </ul>\n" +
       "  `\n" +
       "})\n" +

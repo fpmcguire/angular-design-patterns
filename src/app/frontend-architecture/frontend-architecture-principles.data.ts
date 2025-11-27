@@ -29,7 +29,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: true,
   template: \`
     <ul>
-      <li *ngFor="let todo of todos">
+      <li @for="let todo of todos">
         <span>{{ todo }}</span>
         <button (click)="remove.emit(todo)">x</button>
       </li>
@@ -82,8 +82,8 @@ import { Component } from '@angular/core';
     <button (click)="active = 'overview'">Overview</button>
     <button (click)="active = 'details'">Details</button>
 
-    <section *ngIf="active === 'overview'">Overview content</section>
-    <section *ngIf="active === 'details'">Details content</section>
+    <section @if="active === 'overview'">Overview content</section>
+    <section @if="active === 'details'">Details content</section>
   \`
 })
 export class TabsComponent {

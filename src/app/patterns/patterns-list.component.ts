@@ -8,9 +8,9 @@ import { PATTERNS, Pattern, PatternCategory } from './patterns.data';
   imports: [RouterModule],
   template: `
     <div class="patterns">
-      <h2>Angular Design Patterns and Principles</h2>
+      <h2>Angular Design Patterns</h2>
       <p class="patterns__intro">
-        Angular 21 + Jest catalog of common patterns (components, state, interaction, performance, API, and DI).
+        Angular 21 catalog of common patterns (components, state, interaction, performance, API, and DI).
       </p>
 
       @if (categories.length > 1) {

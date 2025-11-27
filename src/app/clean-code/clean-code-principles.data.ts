@@ -135,7 +135,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   template: \`
     <button (click)="add()">Add</button>
     <ul>
-      <li *ngFor="let todo of todos">{{ todo }}</li>
+      <li @for="let todo of todos">{{ todo }}</li>
     </ul>
   \`
 })

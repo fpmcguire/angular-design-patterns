@@ -180,10 +180,10 @@ export class ProductsQuery {
 }
     `.trim(),
     exampleHtml: `
-<ng-container *ngIf="productsQuery.state$ | async as s">
-  <p *ngIf="s.loading">Loading...</p>
-  <p *ngIf="s.error">{{ s.error }}</p>
-  <ul *ngIf="s.data">
+<ng-container @if="productsQuery.state$ | async as s">
+  <p @if="s.loading">Loading...</p>
+  <p @if="s.error">{{ s.error }}</p>
+  <ul @if="s.data">
     <li *ngFor="let p of s.data">
       {{ p.name }}
     </li>
