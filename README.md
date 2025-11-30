@@ -56,9 +56,9 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 ---
 
-## 🚀 Deployment to inMotion Hosting (Static Site)
+## 🚀 Deployment to InMotion Hosting (Static Site)
 
-inMotion Hosting shared servers run **Node.js 10**, which is not compatible with Angular 21’s SSR mode.  
+InMotion Hosting shared servers run **Node.js 10**, which is not compatible with Angular 21’s SSR mode.  
 To deploy successfully, the application must be built as a **fully static SPA** instead of SSR.
 
 ### ✔ 1. Update angular.json to disable SSR

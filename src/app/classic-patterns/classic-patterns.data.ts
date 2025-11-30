@@ -1,3 +1,5 @@
+// src/app/classic-patterns/classic-patterns.data.ts
+
 export type ClassicPatternCategory = 'Creational' | 'Structural' | 'Behavioral';
 
 export interface ClassicPattern {
@@ -11,14 +13,16 @@ export interface ClassicPattern {
 }
 
 export const CLASSIC_PATTERNS: ClassicPattern[] = [
-  // --- Creational ------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // CREATIONAL PATTERNS
+  // ---------------------------------------------------------------------------
   {
     id: 'singleton',
     name: 'Singleton',
     category: 'Creational',
     shortDescription: 'Ensure a class has only one instance and provide a global access point.',
     description:
-      'In Angular, services provided in root (providedIn: "root") are effectively singletons, shared across the application and accessed via dependency injection.',
+      'In Angular, services provided in root (providedIn: "root") naturally behave as singletons shared across the whole application via dependency injection.',
     exampleTs: `
 import { Injectable } from '@angular/core';
 
@@ -38,9 +42,9 @@ export class CounterService {
     id: 'factory-method',
     name: 'Factory Method',
     category: 'Creational',
-    shortDescription: 'Defer object creation to subclasses or dedicated factory methods.',
+    shortDescription: 'Define an interface for creating an object, but let subclasses decide which class to instantiate.',
     description:
-      'A factory method encapsulates object creation logic so callers do not need to know which concrete class is instantiated.',
+      'Factory methods encapsulate object creation; in Angular, factory services can decide which concrete implementation to return based on configuration or environment.',
     exampleTs: `
 import { Injectable } from '@angular/core';
 
@@ -72,11 +76,11 @@ export class LoggerFactory {
     id: 'abstract-factory',
     name: 'Abstract Factory',
     category: 'Creational',
-    shortDescription: 'Provide an interface for creating related objects without specifying their concrete classes.',
+    shortDescription: 'Provide an interface for creating families of related objects without specifying their concrete classes.',
     description:
-      'In Angular, you can use injection tokens or configuration services as abstract factories that choose which concrete implementations to use.',
+      'Angular’s injection tokens and configuration objects can serve as abstract factories, choosing which concrete implementations to expose across a feature.',
     exampleTs: `
-import { InjectionToken, inject } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 
 export interface ButtonTheme {
   cssClass: string;
@@ -87,22 +91,78 @@ export const DARK_BUTTON_THEME: ButtonTheme = { cssClass: 'btn-dark' };
 
 export const BUTTON_THEME = new InjectionToken<ButtonTheme>('BUTTON_THEME', {
   providedIn: 'root',
-  factory: () => DARK_BUTTON_THEME // choose at "factory" time
+  factory: () => DARK_BUTTON_THEME // choose default family here
 });
+    `.trim()
+  },
+  {
+    id: 'builder',
+    name: 'Builder',
+    category: 'Creational',
+    shortDescription: 'Separate construction of a complex object from its representation.',
+    description:
+      'A builder in Angular can assemble complex configuration objects (like HTTP query options or chart configs) step by step, exposing a readable fluent API.',
+    exampleTs: `
+import { HttpParams } from '@angular/common/http';
 
-// Usage in a component:
-// const theme = inject(BUTTON_THEME);
+export class QueryBuilder {
+  private params = new HttpParams();
+
+  withPage(page: number): this {
+    this.params = this.params.set('page', String(page));
+    return this;
+  }
+
+  withPageSize(pageSize: number): this {
+    this.params = this.params.set('pageSize', String(pageSize));
+    return this;
+  }
+
+  withFilter(term: string): this {
+    this.params = this.params.set('search', term);
+    return this;
+  }
+
+  build(): HttpParams {
+    return this.params;
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'prototype',
+    name: 'Prototype',
+    category: 'Creational',
+    shortDescription: 'Specify the kind of objects to create using a prototypical instance, and create new objects by copying this prototype.',
+    description:
+      'In Angular/TS you can implement clone methods or use utilities to create copies of configuration prototypes to avoid manual reconfiguration.',
+    exampleTs: `
+export interface WidgetConfig {
+  color: string;
+  size: 'sm' | 'md' | 'lg';
+}
+
+export const DEFAULT_WIDGET: WidgetConfig = {
+  color: 'blue',
+  size: 'md'
+};
+
+export function cloneWidgetConfig(overrides: Partial<WidgetConfig>): WidgetConfig {
+  return { ...DEFAULT_WIDGET, ...overrides };
+}
     `.trim()
   },
 
-  // --- Structural ------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // STRUCTURAL PATTERNS
+  // ---------------------------------------------------------------------------
   {
     id: 'adapter',
     name: 'Adapter',
     category: 'Structural',
-    shortDescription: 'Convert one interface into another that clients expect.',
+    shortDescription: 'Convert the interface of a class into another interface clients expect.',
     description:
-      'Adapter services in Angular sit between awkward backend APIs and clean frontend models, reshaping data while hiding backend details.',
+      'Adapter services in Angular sit between awkward backend APIs and clean frontend models, reshaping responses while hiding backend quirks.',
     exampleTs: `
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -123,21 +183,97 @@ export class UserAdapterService {
 
   getUsers(): Observable<User[]> {
     return this.http.get<LegacyUserApiModel[]>('/api/users').pipe(
-      map(apiUsers =>
-        apiUsers.map(u => ({ fullName: \`\${u.first_name} \${u.last_name}\` }))
-      )
+      map(users => users.map(u => ({ fullName: u.first_name + ' ' + u.last_name })))
     );
   }
 }
     `.trim()
   },
   {
+    id: 'bridge',
+    name: 'Bridge',
+    category: 'Structural',
+    shortDescription: 'Decouple an abstraction from its implementation so that the two can vary independently.',
+    description:
+      'A bridge in Angular can be modeled as an abstract service (abstraction) that delegates to interchangeable implementation services injected behind the scenes.',
+    exampleTs: `
+export abstract class NotificationService {
+  abstract notify(message: string): void;
+}
+
+export class EmailNotificationService extends NotificationService {
+  notify(message: string): void {
+    console.log('Send email:', message);
+  }
+}
+
+export class SmsNotificationService extends NotificationService {
+  notify(message: string): void {
+    console.log('Send SMS:', message);
+  }
+}
+
+// Abstraction can hold a reference to another implementation instance if needed.
+    `.trim()
+  },
+  {
+    id: 'composite',
+    name: 'Composite',
+    category: 'Structural',
+    shortDescription: 'Compose objects into tree structures to represent part-whole hierarchies.',
+    description:
+      'Composite can represent UI trees like menus or nested routes, where leaf and composite nodes share a common interface.',
+    exampleTs: `
+export interface MenuComponent {
+  render(indent?: number): void;
+}
+
+export class MenuItem implements MenuComponent {
+  constructor(private label: string) {}
+  render(indent: number = 0): void {
+    console.log(Array(indent + 1).join(' ') + '- ' + this.label);
+  }
+}
+
+export class MenuGroup implements MenuComponent {
+  constructor(private label: string, private children: MenuComponent[]) {}
+  render(indent: number = 0): void {
+    console.log(Array(indent + 1).join(' ') + this.label + ':');
+    this.children.forEach(child => child.render(indent + 2));
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'decorator',
+    name: 'Decorator',
+    category: 'Structural',
+    shortDescription: 'Attach additional responsibilities to an object dynamically.',
+    description:
+      'Angular’s class decorators (@Component, @Injectable) are a form of decoration; you can also create custom decorators to add behavior like logging or timing.',
+    exampleTs: `
+import { Component } from '@angular/core';
+
+function LogCreation(target: Function) {
+  console.log('Created component:', target.name);
+}
+
+@LogCreation
+@Component({
+  selector: 'app-decorated',
+  standalone: true,
+  template: '<p>Decorated component works!</p>'
+})
+export class DecoratedComponent {}
+    `.trim()
+  },
+  {
     id: 'facade',
     name: 'Facade',
     category: 'Structural',
-    shortDescription: 'Provide a simplified interface to a complex subsystem.',
+    shortDescription: 'Provide a unified interface to a set of interfaces in a subsystem.',
     description:
-      'A facade service in Angular wraps store, HTTP, and other services to expose a simple API that components can consume.',
+      'In Angular, a facade service can wrap NgRx store, repositories, and HTTP calls behind a simple, UI-friendly API.',
     exampleTs: `
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -166,37 +302,290 @@ export class ProductsFacade {
     `.trim()
   },
   {
-    id: 'decorator',
-    name: 'Decorator',
+    id: 'flyweight',
+    name: 'Flyweight',
     category: 'Structural',
-    shortDescription: 'Attach additional responsibilities to an object dynamically.',
+    shortDescription: 'Use sharing to support large numbers of fine-grained objects efficiently.',
     description:
-      'Angular’s class decorators (@Component, @Injectable) are a form of decoration; you can also define custom decorators to transparently add behavior like logging.',
+      'Flyweight in Angular might appear as caching of immutable configuration or icon definitions, reusing shared objects instead of recreating them.',
     exampleTs: `
-import { Component } from '@angular/core';
-
-function LogCreation(target: Function) {
-  console.log('Created component:', target.name);
+export interface IconDefinition {
+  name: string;
+  svgPath: string;
 }
 
-@LogCreation
-@Component({
-  selector: 'app-decorated',
-  standalone: true,
-  template: '<p>Decorated component works!</p>'
-})
-export class DecoratedComponent {}
+const iconCache = new Map<string, IconDefinition>();
+
+export function getIcon(name: string): IconDefinition {
+  let icon = iconCache.get(name);
+  if (!icon) {
+    icon = { name: name, svgPath: '<svg>...</svg>' };
+    iconCache.set(name, icon);
+  }
+  return icon;
+}
+    `.trim()
+  },
+  {
+    id: 'proxy',
+    name: 'Proxy',
+    category: 'Structural',
+    shortDescription: 'Provide a surrogate or placeholder for another object to control access to it.',
+    description:
+      'A proxy in Angular can be an HTTP interceptor or wrapper service that adds caching, logging, or auth checks before delegating to the real service.',
+    exampleTs: `
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, shareReplay } from 'rxjs';
+
+export interface Settings {
+  theme: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class SettingsService {
+  private settings$: Observable<Settings> | null = null;
+
+  constructor(private http: HttpClient) {}
+
+  getSettings(): Observable<Settings> {
+    if (!this.settings$) {
+      this.settings$ = this.http.get<Settings>('/api/settings').pipe(shareReplay(1));
+    }
+    return this.settings$;
+  }
+}
     `.trim()
   },
 
-  // --- Behavioral ------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // BEHAVIORAL PATTERNS
+  // ---------------------------------------------------------------------------
+  {
+    id: 'chain-of-responsibility',
+    name: 'Chain of Responsibility',
+    category: 'Behavioral',
+    shortDescription: 'Pass a request along a chain of handlers until one handles it.',
+    description:
+      'In Angular, you can model request processing as a chain of functions or services that each decide whether to handle a command or pass it on.',
+    exampleTs: `
+export interface Handler {
+  setNext(handler: Handler): Handler;
+  handle(request: string): void;
+}
+
+export abstract class BaseHandler implements Handler {
+  private next: Handler | null = null;
+
+  setNext(handler: Handler): Handler {
+    this.next = handler;
+    return handler;
+  }
+
+  handle(request: string): void {
+    if (this.next) {
+      this.next.handle(request);
+    }
+  }
+}
+
+export class AuthHandler extends BaseHandler {
+  handle(request: string): void {
+    if (request === 'auth') {
+      console.log('Handled by AuthHandler');
+    } else {
+      super.handle(request);
+    }
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'command',
+    name: 'Command',
+    category: 'Behavioral',
+    shortDescription: 'Encapsulate a request as an object.',
+    description:
+      'Command-style services in Angular wrap user actions so components call simple methods like "execute" instead of knowing how the action is implemented.',
+    exampleTs: `
+export interface Command {
+  execute(): void;
+}
+
+export class LogCommand implements Command {
+  execute(): void {
+    console.log('LogCommand executed');
+  }
+}
+
+export class CommandInvoker {
+  run(command: Command) {
+    command.execute();
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'interpreter',
+    name: 'Interpreter',
+    category: 'Behavioral',
+    shortDescription: 'Define a representation for a grammar and an interpreter for sentences in the language.',
+    description:
+      'An interpreter in Angular/TS might parse a small filter language or feature flag expression into an AST and evaluate it at runtime.',
+    exampleTs: `
+export interface Expr {
+  eval(context: Record<string, boolean>): boolean;
+}
+
+export class VariableExpr implements Expr {
+  constructor(private name: string) {}
+  eval(context: Record<string, boolean>): boolean {
+    return !!context[this.name];
+  }
+}
+
+export class AndExpr implements Expr {
+  constructor(private left: Expr, private right: Expr) {}
+  eval(context: Record<string, boolean>): boolean {
+    return this.left.eval(context) && this.right.eval(context);
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'iterator',
+    name: 'Iterator',
+    category: 'Behavioral',
+    shortDescription: 'Provide a way to access elements of an aggregate object sequentially without exposing its representation.',
+    description:
+      'TypeScript’s built-in iterators already support this pattern; you can implement custom iterators over collections or paged API results.',
+    exampleTs: `
+export class NumberRange implements Iterable<number> {
+  constructor(private start: number, private end: number) {}
+
+  [Symbol.iterator](): Iterator<number> {
+    let current = this.start;
+    const end = this.end;
+    return {
+      next(): IteratorResult<number> {
+        if (current <= end) {
+          return { value: current++, done: false };
+        }
+        return { value: undefined as any, done: true };
+      }
+    };
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'mediator',
+    name: 'Mediator',
+    category: 'Behavioral',
+    shortDescription: 'Define an object that encapsulates how a set of objects interact.',
+    description:
+      'A mediator service in Angular coordinates communication between components so they do not talk to each other directly.',
+    exampleTs: `
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class ChatMediator {
+  private messageSubject = new Subject<string>();
+  messages$ = this.messageSubject.asObservable();
+
+  send(message: string) {
+    this.messageSubject.next(message);
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'memento',
+    name: 'Memento',
+    category: 'Behavioral',
+    shortDescription: 'Capture and externalize an object’s internal state so it can be restored later.',
+    description:
+      'In Angular, you can snapshot component or form state into a memento object and later restore it, enabling undo/redo or draft-save flows.',
+    exampleTs: `
+export interface FormMemento {
+  value: any;
+}
+
+export class FormOriginator {
+  constructor(private form: { value: any; setValue(v: any): void }) {}
+
+  save(): FormMemento {
+    return { value: { ...this.form.value } };
+  }
+
+  restore(memento: FormMemento): void {
+    this.form.setValue(memento.value);
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'observer',
+    name: 'Observer',
+    category: 'Behavioral',
+    shortDescription: 'Define a one-to-many dependency between objects.',
+    description:
+      'RxJS Observables used in Angular for HTTP, events, and state are a direct implementation of the Observer pattern.',
+    exampleTs: `
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class ThemeStore {
+  private themeSubject = new BehaviorSubject<'light' | 'dark'>('light');
+  readonly theme$: Observable<'light' | 'dark'> = this.themeSubject.asObservable();
+
+  setTheme(theme: 'light' | 'dark') {
+    this.themeSubject.next(theme);
+  }
+}
+    `.trim()
+  },
+  {
+    id: 'state',
+    name: 'State',
+    category: 'Behavioral',
+    shortDescription: 'Allow an object to alter its behavior when its internal state changes.',
+    description:
+      'You can model feature modes or workflows in Angular as state objects that implement the same interface but behave differently as state changes.',
+    exampleTs: `
+export interface OrderState {
+  pay(): void;
+  ship(): void;
+}
+
+export class PendingState implements OrderState {
+  pay(): void {
+    console.log('Order paid, moving to Paid state');
+  }
+  ship(): void {
+    console.log('Cannot ship: order not paid');
+  }
+}
+
+export class PaidState implements OrderState {
+  pay(): void {
+    console.log('Already paid');
+  }
+  ship(): void {
+    console.log('Order shipped');
+  }
+}
+    `.trim()
+  },
   {
     id: 'strategy',
     name: 'Strategy',
     category: 'Behavioral',
     shortDescription: 'Define a family of algorithms, encapsulate each one, and make them interchangeable.',
     description:
-      'Angular’s DI system makes it easy to swap strategy implementations using injection tokens or providers.',
+      'Angular’s DI makes it easy to swap strategy implementations using injection tokens or providers.',
     exampleTs: `
 import { Injectable, InjectionToken, Inject } from '@angular/core';
 
@@ -231,66 +620,12 @@ export class CheckoutService {
     `.trim()
   },
   {
-    id: 'observer',
-    name: 'Observer',
-    category: 'Behavioral',
-    shortDescription: 'Define a one-to-many dependency so that when one object changes, all dependents are notified.',
-    description:
-      'RxJS Observables in Angular are a direct implementation of the Observer pattern, used heavily for HTTP, events, and state.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-
-@Injectable({ providedIn: 'root' })
-export class ThemeStore {
-  private themeSubject = new BehaviorSubject<'light' | 'dark'>('light');
-  readonly theme$: Observable<'light' | 'dark'> = this.themeSubject.asObservable();
-
-  setTheme(theme: 'light' | 'dark') {
-    this.themeSubject.next(theme);
-  }
-}
-
-// Components subscribe:
-// this.themeStore.theme$.subscribe(theme => ...);
-    `.trim()
-  },
-  {
-    id: 'command',
-    name: 'Command',
-    category: 'Behavioral',
-    shortDescription: 'Encapsulate a request as an object to parameterize and queue actions.',
-    description:
-      'Command-style services in Angular wrap user actions (add, remove, save) so components only call methods like "execute" without knowing how they are implemented.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
-
-export interface Command {
-  execute(): void;
-}
-
-@Injectable({ providedIn: 'root' })
-export class LogCommand implements Command {
-  execute(): void {
-    console.log('LogCommand executed');
-  }
-}
-
-@Injectable({ providedIn: 'root' })
-export class CommandInvoker {
-  run(command: Command) {
-    command.execute();
-  }
-}
-    `.trim()
-  },
-  {
     id: 'template-method',
     name: 'Template Method',
     category: 'Behavioral',
-    shortDescription: 'Define the skeleton of an algorithm and let subclasses override specific steps.',
+    shortDescription: 'Define the skeleton of an algorithm in a base class and let subclasses override steps.',
     description:
-      'In Angular you can create abstract base components/services that implement shared flows while allowing subclasses to customize specific operations.',
+      'Abstract base components/services in Angular can implement common flows while subclasses customize specific operations.',
     exampleTs: `
 import { OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -302,29 +637,39 @@ export abstract class DataLoader<T> implements OnInit {
     this.load().subscribe(value => (this.data = value));
   }
 
-  // subclasses must implement how data is loaded
   protected abstract load(): Observable<T>;
 }
     `.trim()
   },
   {
-    id: 'mediator',
-    name: 'Mediator',
+    id: 'visitor',
+    name: 'Visitor',
     category: 'Behavioral',
-    shortDescription: 'Encapsulate how a set of objects interact, promoting loose coupling.',
+    shortDescription: 'Represent an operation to be performed on elements of an object structure.',
     description:
-      'A mediator service in Angular coordinates communication between multiple components so they do not talk to each other directly.',
+      'Visitor can be used in Angular/TS for AST-like structures (e.g. form schema or dynamic UI definitions) where you apply different operations without changing node classes.',
     exampleTs: `
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+export interface NodeVisitor {
+  visitText(node: TextNode): void;
+  visitContainer(node: ContainerNode): void;
+}
 
-@Injectable({ providedIn: 'root' })
-export class ChatMediator {
-  private messageSubject = new Subject<string>();
-  messages$ = this.messageSubject.asObservable();
+export interface Node {
+  accept(visitor: NodeVisitor): void;
+}
 
-  send(message: string) {
-    this.messageSubject.next(message);
+export class TextNode implements Node {
+  constructor(public text: string) {}
+  accept(visitor: NodeVisitor): void {
+    visitor.visitText(this);
+  }
+}
+
+export class ContainerNode implements Node {
+  constructor(public children: Node[]) {}
+  accept(visitor: NodeVisitor): void {
+    visitor.visitContainer(this);
+    this.children.forEach(c => c.accept(visitor));
   }
 }
     `.trim()
