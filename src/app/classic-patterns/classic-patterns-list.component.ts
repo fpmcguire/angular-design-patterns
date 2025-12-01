@@ -14,6 +14,8 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
         shown with Angular & TypeScript examples.
       </p>
 
+      <p class="patterns__intro">Stars indicate common usage in Angular. <span class="pattern-legend__star">★ - ★★★★★</span></p>
+
       <div class="patterns__filters">
         <button
           type="button"
@@ -42,9 +44,17 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
             class="pattern-card"
             [routerLink]="['/classic', pattern.id]"
           >
+
             <h3>{{ pattern.name }}</h3>
             <p class="pattern-card__category">{{ pattern.category }}</p>
             <p class="pattern-card__description">{{ pattern.shortDescription }}</p>
+
+            <div class="pattern-card__stars">
+              @for (star of starsArray(pattern.rating); track $index) {
+                <span>★</span>
+              }
+            </div>
+
           </a>
         }
       </div>
@@ -94,8 +104,9 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
     }
 
     .pattern-card {
+      position: relative;
       display: block;
-      padding: 0.9rem 1rem;
+      padding: 1.2rem 1rem 1.4rem; /* extra bottom padding for stars */
       border-radius: 0.75rem;
       background: #ffffff;
       border: 1px solid #e5e7eb;
@@ -109,6 +120,23 @@ import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './clas
       transform: translateY(-1px);
       border-color: #bfdbfe;
       box-shadow: 0 6px 16px rgba(15,23,42,0.12);
+    }
+
+    /* ⭐ legend + green */
+    .pattern-legend__star {
+      font-size: 0.9rem;
+      color: #22c55e; /* green-500 */
+    }
+
+    /* ⭐ bottom-right + green */
+    .pattern-card__stars {
+      position: absolute;
+      bottom: 0.55rem;
+      right: 0.75rem;
+      font-size: 0.9rem;
+      color: #22c55e; /* green-500 */
+      display: flex;
+      gap: 0.1rem;
     }
 
     .pattern-card h3 {
@@ -150,5 +178,9 @@ export class ClassicPatternsListComponent {
 
   selectCategory(cat: ClassicPatternCategory | null) {
     this.selectedCategorySignal.set(cat);
+  }
+
+  starsArray(rating: number): number[] {
+    return Array.from({ length: rating }, (_, i) => i);
   }
 }

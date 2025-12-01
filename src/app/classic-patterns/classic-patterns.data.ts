@@ -8,6 +8,7 @@ export interface ClassicPattern {
   category: ClassicPatternCategory;
   shortDescription: string;
   description: string;
+  rating: 1 | 2 | 3 | 4 | 5; // popularity in real-world Angular
   exampleTs?: string;
   exampleHtml?: string;
 }
@@ -23,6 +24,7 @@ export const CLASSIC_PATTERNS: ClassicPattern[] = [
     shortDescription: 'Ensure a class has only one instance and provide a global access point.',
     description:
       'In Angular, services provided in root (providedIn: "root") naturally behave as singletons shared across the whole application via dependency injection.',
+    rating: 5,
     exampleTs: `
 import { Injectable } from '@angular/core';
 
@@ -45,6 +47,7 @@ export class CounterService {
     shortDescription: 'Define an interface for creating an object, but let subclasses decide which class to instantiate.',
     description:
       'Factory methods encapsulate object creation; in Angular, factory services can decide which concrete implementation to return based on configuration or environment.',
+    rating: 4,
     exampleTs: `
 import { Injectable } from '@angular/core';
 
@@ -79,6 +82,7 @@ export class LoggerFactory {
     shortDescription: 'Provide an interface for creating families of related objects without specifying their concrete classes.',
     description:
       'Angular’s injection tokens and configuration objects can serve as abstract factories, choosing which concrete implementations to expose across a feature.',
+    rating: 3,
     exampleTs: `
 import { InjectionToken } from '@angular/core';
 
@@ -102,6 +106,7 @@ export const BUTTON_THEME = new InjectionToken<ButtonTheme>('BUTTON_THEME', {
     shortDescription: 'Separate construction of a complex object from its representation.',
     description:
       'A builder in Angular can assemble complex configuration objects (like HTTP query options or chart configs) step by step, exposing a readable fluent API.',
+    rating: 3,
     exampleTs: `
 import { HttpParams } from '@angular/common/http';
 
@@ -136,6 +141,7 @@ export class QueryBuilder {
     shortDescription: 'Specify the kind of objects to create using a prototypical instance, and create new objects by copying this prototype.',
     description:
       'In Angular/TS you can implement clone methods or use utilities to create copies of configuration prototypes to avoid manual reconfiguration.',
+    rating: 2,
     exampleTs: `
 export interface WidgetConfig {
   color: string;
@@ -163,6 +169,7 @@ export function cloneWidgetConfig(overrides: Partial<WidgetConfig>): WidgetConfi
     shortDescription: 'Convert the interface of a class into another interface clients expect.',
     description:
       'Adapter services in Angular sit between awkward backend APIs and clean frontend models, reshaping responses while hiding backend quirks.',
+    rating: 5,
     exampleTs: `
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -196,6 +203,7 @@ export class UserAdapterService {
     shortDescription: 'Decouple an abstraction from its implementation so that the two can vary independently.',
     description:
       'A bridge in Angular can be modeled as an abstract service (abstraction) that delegates to interchangeable implementation services injected behind the scenes.',
+    rating: 2,
     exampleTs: `
 export abstract class NotificationService {
   abstract notify(message: string): void;
@@ -212,8 +220,6 @@ export class SmsNotificationService extends NotificationService {
     console.log('Send SMS:', message);
   }
 }
-
-// Abstraction can hold a reference to another implementation instance if needed.
     `.trim()
   },
   {
@@ -223,6 +229,7 @@ export class SmsNotificationService extends NotificationService {
     shortDescription: 'Compose objects into tree structures to represent part-whole hierarchies.',
     description:
       'Composite can represent UI trees like menus or nested routes, where leaf and composite nodes share a common interface.',
+    rating: 3,
     exampleTs: `
 export interface MenuComponent {
   render(indent?: number): void;
@@ -251,6 +258,7 @@ export class MenuGroup implements MenuComponent {
     shortDescription: 'Attach additional responsibilities to an object dynamically.',
     description:
       'Angular’s class decorators (@Component, @Injectable) are a form of decoration; you can also create custom decorators to add behavior like logging or timing.',
+    rating: 4,
     exampleTs: `
 import { Component } from '@angular/core';
 
@@ -274,6 +282,7 @@ export class DecoratedComponent {}
     shortDescription: 'Provide a unified interface to a set of interfaces in a subsystem.',
     description:
       'In Angular, a facade service can wrap NgRx store, repositories, and HTTP calls behind a simple, UI-friendly API.',
+    rating: 5,
     exampleTs: `
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -308,6 +317,7 @@ export class ProductsFacade {
     shortDescription: 'Use sharing to support large numbers of fine-grained objects efficiently.',
     description:
       'Flyweight in Angular might appear as caching of immutable configuration or icon definitions, reusing shared objects instead of recreating them.',
+    rating: 1,
     exampleTs: `
 export interface IconDefinition {
   name: string;
@@ -333,6 +343,7 @@ export function getIcon(name: string): IconDefinition {
     shortDescription: 'Provide a surrogate or placeholder for another object to control access to it.',
     description:
       'A proxy in Angular can be an HTTP interceptor or wrapper service that adds caching, logging, or auth checks before delegating to the real service.',
+    rating: 4,
     exampleTs: `
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -368,6 +379,7 @@ export class SettingsService {
     shortDescription: 'Pass a request along a chain of handlers until one handles it.',
     description:
       'In Angular, you can model request processing as a chain of functions or services that each decide whether to handle a command or pass it on.',
+    rating: 4,
     exampleTs: `
 export interface Handler {
   setNext(handler: Handler): Handler;
@@ -407,6 +419,7 @@ export class AuthHandler extends BaseHandler {
     shortDescription: 'Encapsulate a request as an object.',
     description:
       'Command-style services in Angular wrap user actions so components call simple methods like "execute" instead of knowing how the action is implemented.',
+    rating: 3,
     exampleTs: `
 export interface Command {
   execute(): void;
@@ -432,6 +445,7 @@ export class CommandInvoker {
     shortDescription: 'Define a representation for a grammar and an interpreter for sentences in the language.',
     description:
       'An interpreter in Angular/TS might parse a small filter language or feature flag expression into an AST and evaluate it at runtime.',
+    rating: 1,
     exampleTs: `
 export interface Expr {
   eval(context: Record<string, boolean>): boolean;
@@ -459,6 +473,7 @@ export class AndExpr implements Expr {
     shortDescription: 'Provide a way to access elements of an aggregate object sequentially without exposing its representation.',
     description:
       'TypeScript’s built-in iterators already support this pattern; you can implement custom iterators over collections or paged API results.',
+    rating: 2,
     exampleTs: `
 export class NumberRange implements Iterable<number> {
   constructor(private start: number, private end: number) {}
@@ -485,6 +500,7 @@ export class NumberRange implements Iterable<number> {
     shortDescription: 'Define an object that encapsulates how a set of objects interact.',
     description:
       'A mediator service in Angular coordinates communication between components so they do not talk to each other directly.',
+    rating: 4,
     exampleTs: `
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -507,6 +523,7 @@ export class ChatMediator {
     shortDescription: 'Capture and externalize an object’s internal state so it can be restored later.',
     description:
       'In Angular, you can snapshot component or form state into a memento object and later restore it, enabling undo/redo or draft-save flows.',
+    rating: 2,
     exampleTs: `
 export interface FormMemento {
   value: any;
@@ -532,6 +549,7 @@ export class FormOriginator {
     shortDescription: 'Define a one-to-many dependency between objects.',
     description:
       'RxJS Observables used in Angular for HTTP, events, and state are a direct implementation of the Observer pattern.',
+    rating: 5,
     exampleTs: `
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -554,6 +572,7 @@ export class ThemeStore {
     shortDescription: 'Allow an object to alter its behavior when its internal state changes.',
     description:
       'You can model feature modes or workflows in Angular as state objects that implement the same interface but behave differently as state changes.',
+    rating: 3,
     exampleTs: `
 export interface OrderState {
   pay(): void;
@@ -586,6 +605,7 @@ export class PaidState implements OrderState {
     shortDescription: 'Define a family of algorithms, encapsulate each one, and make them interchangeable.',
     description:
       'Angular’s DI makes it easy to swap strategy implementations using injection tokens or providers.',
+    rating: 5,
     exampleTs: `
 import { Injectable, InjectionToken, Inject } from '@angular/core';
 
@@ -626,6 +646,7 @@ export class CheckoutService {
     shortDescription: 'Define the skeleton of an algorithm in a base class and let subclasses override steps.',
     description:
       'Abstract base components/services in Angular can implement common flows while subclasses customize specific operations.',
+    rating: 3,
     exampleTs: `
 import { OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -648,6 +669,7 @@ export abstract class DataLoader<T> implements OnInit {
     shortDescription: 'Represent an operation to be performed on elements of an object structure.',
     description:
       'Visitor can be used in Angular/TS for AST-like structures (e.g. form schema or dynamic UI definitions) where you apply different operations without changing node classes.',
+    rating: 1,
     exampleTs: `
 export interface NodeVisitor {
   visitText(node: TextNode): void;
