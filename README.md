@@ -73,6 +73,12 @@ To deploy successfully, the application must be built as a **fully static SPA** 
 ng build --configuration=production
 ```
 
+-- OR -- for subdirectory deployment (/angular-design-patterns)
+
+```bash
+npx ng build --configuration=production --base-href /angular-design-patterns/
+```
+
 ### ✔ 3. Upload static files to public_html/
 
 Upload:
@@ -91,6 +97,19 @@ dist/angular-design-patterns/browser/
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]
+</IfModule>
+```
+
+-- OR -- for subdirectory deployment (/angular-design-patterns)
+
+```
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /angular-design-patterns/
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /angular-design-patterns/index.html [L]
 </IfModule>
 ```
 
