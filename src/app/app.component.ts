@@ -42,6 +42,10 @@ import { RouterModule } from '@angular/router';
             🔄 Reactive
           </a>
 
+          <a routerLink="/architecture" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            🏛️ Architecture
+          </a>
+
           <!-- // ToDo:
           <a routerLink="/testing" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             ✅ Testing

@@ -15,6 +15,7 @@ import { FrontendArchitecturePrinciplesListComponent } from './frontend-architec
 import { FrontendArchitecturePrincipleDetailComponent } from './frontend-architecture/frontend-architecture-principle-detail.component';
 import { ReactivePrinciplesListComponent } from './reactive-principles/reactive-principles-list.component';
 import { ReactivePrincipleDetailComponent } from './reactive-principles/reactive-principle-detail.component';
+import { ArchitecturePageComponent } from './architecture/architecture-page.component';
 
 export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'patterns' },
@@ -39,6 +40,8 @@ export const appRoutes: Routes = [
 
   { path: 'reactive', component: ReactivePrinciplesListComponent },
   { path: 'reactive/:id', component: ReactivePrincipleDetailComponent },
+
+  { path: 'architecture', component: ArchitecturePageComponent },
 
   // TODO: add routes for reactive-principles, testing-principles, ux-api, maintainability
   // { path: 'testing', ... }
