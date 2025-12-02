@@ -1,21 +1,21 @@
 import { Routes } from '@angular/router';
 
 // existing imports...
-import { PatternsListComponent } from './patterns/patterns-list.component';
-import { PatternDetailComponent } from './patterns/pattern-detail.component';
-import { ClassicPatternsListComponent } from './classic-patterns/classic-patterns-list.component';
-import { ClassicPatternDetailComponent } from './classic-patterns/classic-pattern-detail.component';
-import { SolidPrinciplesListComponent } from './solid/solid-principles-list.component';
-import { SolidPrincipleDetailComponent } from './solid/solid-principle-detail.component';
-import { GraspPatternsListComponent } from './grasp/grasp-patterns-list.component';
-import { GraspPatternDetailComponent } from './grasp/grasp-pattern-detail.component';
-import { CleanCodePrinciplesListComponent } from './clean-code/clean-code-principles-list.component';
-import { CleanCodePrincipleDetailComponent } from './clean-code/clean-code-principle-detail.component';
-import { FrontendArchitecturePrinciplesListComponent } from './frontend-architecture/frontend-architecture-principles-list.component';
-import { FrontendArchitecturePrincipleDetailComponent } from './frontend-architecture/frontend-architecture-principle-detail.component';
-import { ReactivePrinciplesListComponent } from './reactive-principles/reactive-principles-list.component';
-import { ReactivePrincipleDetailComponent } from './reactive-principles/reactive-principle-detail.component';
-import { ArchitecturePageComponent } from './architecture/architecture-page.component';
+import { PatternsListComponent } from './features/patterns/patterns-list.component';
+import { PatternDetailComponent } from './features/patterns/pattern-detail.component';
+import { ClassicPatternsListComponent } from './features/classic-patterns/classic-patterns-list.component';
+import { ClassicPatternDetailComponent } from './features/classic-patterns/classic-pattern-detail.component';
+import { SolidPrinciplesListComponent } from './features/solid/solid-principles-list.component';
+import { SolidPrincipleDetailComponent } from './features/solid/solid-principle-detail.component';
+import { GraspPatternsListComponent } from './features/grasp/grasp-patterns-list.component';
+import { GraspPatternDetailComponent } from './features/grasp/grasp-pattern-detail.component';
+import { CleanCodePrinciplesListComponent } from './features/clean-code/clean-code-principles-list.component';
+import { CleanCodePrincipleDetailComponent } from './features/clean-code/clean-code-principle-detail.component';
+import { FrontendArchitecturePrinciplesListComponent } from './features/frontend-architecture/frontend-architecture-principles-list.component';
+import { FrontendArchitecturePrincipleDetailComponent } from './features/frontend-architecture/frontend-architecture-principle-detail.component';
+import { ReactivePrinciplesListComponent } from './features/reactive-principles/reactive-principles-list.component';
+import { ReactivePrincipleDetailComponent } from './features/reactive-principles/reactive-principle-detail.component';
+import { ArchitecturePageComponent } from './features/architecture/architecture-page.component';
 
 export const appRoutes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'patterns' },
