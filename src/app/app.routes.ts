@@ -43,10 +43,5 @@ export const appRoutes: Routes = [
 
   { path: 'architecture', component: ArchitecturePageComponent },
 
-  // TODO: add routes for reactive-principles, testing-principles, ux-api, maintainability
-  // { path: 'testing', ... }
-  // { path: 'ux-api', ... }
-  // { path: 'maintainability', ... }
-
   { path: '**', redirectTo: 'patterns' }
 ];

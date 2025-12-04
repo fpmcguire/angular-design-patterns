@@ -1,0 +1,8 @@
+@use '../../../styles/list.scss' as *;
+
+.chip--active {
+  background: #22c55e;
+  color: #052e16;
+  border-color: #22c55e;
+  font-weight: 600;
+}

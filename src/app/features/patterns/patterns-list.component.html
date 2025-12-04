@@ -1,0 +1,41 @@
+<div class="patterns">
+  <h2>Angular Design Patterns</h2>
+  <p class="patterns__intro">
+    Angular 21 catalog of common patterns (components, state, interaction, performance, API, and
+    DI).
+  </p>
+
+  @if (categories.length > 1) {
+    <div class="patterns__filters">
+      <button
+        type="button"
+        class="chip"
+        [class.chip--active]="selectedCategory === null"
+        (click)="selectCategory(null)"
+      >
+        All
+      </button>
+
+      @for (cat of categories; track cat) {
+        <button
+          type="button"
+          class="chip"
+          [class.chip--active]="selectedCategory === cat"
+          (click)="selectCategory(cat)"
+        >
+          {{ cat }}
+        </button>
+      }
+    </div>
+  }
+
+  <div class="patterns__grid">
+    @for (pattern of filteredPatterns(); track pattern.id) {
+      <a class="pattern-card" [routerLink]="['/patterns', pattern.id]">
+        <h3>{{ pattern.name }}</h3>
+        <p class="pattern-card__category">{{ pattern.category }}</p>
+        <p class="pattern-card__description">{{ pattern.shortDescription }}</p>
+      </a>
+    }
+  </div>
+</div>

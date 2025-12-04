@@ -1,0 +1,39 @@
+<div class="patterns">
+  <h2>Clean Code Principles</h2>
+  <p class="patterns__intro">
+    Everyday principles for writing clear, maintainable Angular & TypeScript code (DRY, KISS, YAGNI,
+    and more).
+  </p>
+
+  <div class="patterns__filters">
+    <button
+      type="button"
+      class="chip"
+      [class.chip--active]="selectedCategory === null"
+      (click)="selectCategory(null)"
+    >
+      All
+    </button>
+
+    @for (cat of categories; track cat) {
+      <button
+        type="button"
+        class="chip"
+        [class.chip--active]="selectedCategory === cat"
+        (click)="selectCategory(cat)"
+      >
+        {{ cat }}
+      </button>
+    }
+  </div>
+
+  <div class="patterns__grid">
+    @for (p of filtered(); track p.id) {
+      <a class="pattern-card" [routerLink]="['/clean-code', p.id]">
+        <h3>{{ p.name }}</h3>
+        <p class="pattern-card__category">{{ p.category }}</p>
+        <p class="pattern-card__description">{{ p.shortDescription }}</p>
+      </a>
+    }
+  </div>
+</div>

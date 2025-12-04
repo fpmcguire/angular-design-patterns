@@ -1,0 +1,35 @@
+@if (principle()) {
+  <a routerLink="/clean-code" class="back-link">← Back to Clean Code</a>
+
+  <header class="detail-header">
+    <h2>{{ principle()!.name }}</h2>
+    <span class="detail-header__category">{{ principle()!.category }}</span>
+  </header>
+
+  <p class="detail-description">
+    {{ principle()!.description }}
+  </p>
+
+  @if (principle()!.exampleTs || principle()!.exampleHtml) {
+    <section class="detail-examples">
+      <h3>Angular / TypeScript Example</h3>
+
+      @if (principle()!.exampleTs) {
+        <div class="code-block">
+          <div class="code-block__label">TypeScript</div>
+          <pre><code>{{ principle()!.exampleTs }}</code></pre>
+        </div>
+      }
+
+      @if (principle()!.exampleHtml) {
+        <div class="code-block">
+          <div class="code-block__label">Template</div>
+          <pre><code>{{ principle()!.exampleHtml }}</code></pre>
+        </div>
+      }
+    </section>
+  }
+} @else {
+  <a routerLink="/clean-code" class="back-link">← Back to Clean Code</a>
+  <p>Principle not found.</p>
+}

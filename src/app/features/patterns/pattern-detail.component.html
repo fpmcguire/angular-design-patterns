@@ -1,0 +1,47 @@
+@if (pattern()) {
+  <a routerLink="/patterns" class="back-link">← Back to all patterns</a>
+
+  <header class="detail-header">
+    <h2>{{ pattern()!.name }}</h2>
+    <span class="detail-header__category">{{ pattern()!.category }}</span>
+  </header>
+
+  <p class="detail-description">
+    {{ pattern()!.description }}
+  </p>
+
+  @if (pattern()!.exampleTs || pattern()!.exampleHtml) {
+    <section class="detail-examples">
+      <h3>Example</h3>
+
+      @if (pattern()!.exampleTs) {
+        <div class="code-block">
+          <div class="code-block__label">TypeScript</div>
+          <pre><code>{{ pattern()!.exampleTs }}</code></pre>
+        </div>
+      }
+
+      @if (pattern()!.exampleHtml) {
+        <div class="code-block">
+          <div class="code-block__label">Template</div>
+          <pre><code>{{ pattern()!.exampleHtml }}</code></pre>
+        </div>
+      }
+
+      <p class="hint">
+        You can copy this snippet into a standalone component, directive, or service to experiment
+        with the pattern in isolation.
+      </p>
+    </section>
+  } @else {
+    <section class="detail-examples">
+      <p class="hint">
+        Example snippet not yet added in this catalog. You can paste your own code here via
+        <code>patterns.data.ts</code>.
+      </p>
+    </section>
+  }
+} @else {
+  <a routerLink="/patterns" class="back-link">← Back to all patterns</a>
+  <p>Pattern not found.</p>
+}
