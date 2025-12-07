@@ -8,7 +8,7 @@ export interface ClassicPattern {
   category: ClassicPatternCategory;
   shortDescription: string;
   description: string;
-  rating: 1 | 2 | 3 | 4 | 5; // popularity in real-world Angular
+  rating?: 1 | 2 | 3 | 4 | 5; // popularity in real-world Angular
   exampleTs?: string;
   exampleHtml?: string;
 }

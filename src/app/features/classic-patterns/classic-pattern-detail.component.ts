@@ -22,4 +22,8 @@ export class ClassicPatternDetailComponent {
     const found = CLASSIC_PATTERNS.find(p => p.id === id) ?? null;
     this.patternSignal.set(found);
   }
+
+  starsArray(rating: number): number[] {
+    return Array.from({ length: rating }, (_, i) => i);
+  }
 }

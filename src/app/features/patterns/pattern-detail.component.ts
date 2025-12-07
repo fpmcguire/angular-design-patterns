@@ -19,7 +19,7 @@ export class PatternDetailComponent {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    const found = PATTERNS.find(p => p.id === id) ?? null;
+    const found = (PATTERNS as Pattern[]).find(p => p.id === id) ?? null;
     this.patternSignal.set(found);
   }
 }

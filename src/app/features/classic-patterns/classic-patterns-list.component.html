@@ -38,11 +38,13 @@
         <p class="pattern-card__category">{{ pattern.category }}</p>
         <p class="pattern-card__description">{{ pattern.shortDescription }}</p>
 
-        <div class="pattern-card__stars">
-          @for (star of starsArray(pattern.rating); track $index) {
-            <span>★</span>
-          }
-        </div>
+        @if (pattern.rating) {
+          <div class="pattern-card__stars">
+            @for (star of starsArray(pattern.rating); track $index) {
+              <span>★</span>
+            }
+          </div>
+        }
       </a>
     }
   </div>

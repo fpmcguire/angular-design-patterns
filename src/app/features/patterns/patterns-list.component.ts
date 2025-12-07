@@ -11,10 +11,10 @@ import { PATTERNS, Pattern, PatternCategory } from './patterns.data';
 })
 
 export class PatternsListComponent {
-  readonly patterns = PATTERNS;
+  readonly patterns = PATTERNS as Pattern[];
   readonly categories: PatternCategory[] = Array.from(
-    new Set(PATTERNS.map(p => p.category))
-  );
+    new Set(this.patterns.map(p => p.category))
+  ) as PatternCategory[];
 
   private readonly selectedCategorySignal = signal<PatternCategory | null>(null);
   readonly filteredPatterns = computed<Pattern[]>(() => {
@@ -29,5 +29,9 @@ export class PatternsListComponent {
 
   selectCategory(cat: PatternCategory | null) {
     this.selectedCategorySignal.set(cat);
+  }
+
+  starsArray(rating: number): number[] {
+    return Array.from({ length: rating }, (_, i) => i);
   }
 }

@@ -1,9 +1,16 @@
 @if (pattern()) {
-  <a routerLink="/classic" class="back-link">← Back to classic patterns</a>
+  <a routerLink="/classic" class="back-link">← back to Classic Design Patterns (GoF)</a>
 
   <header class="detail-header">
     <h2>{{ pattern()!.name }}</h2>
     <span class="detail-header__category">{{ pattern()!.category }}</span>
+    @if (pattern()!.rating) {
+      <div class="stars">
+        @for (star of starsArray(pattern()!.rating ?? 0); track $index) {
+          <span>★</span>
+        }
+      </div>
+    }
   </header>
 
   <p class="detail-description">
