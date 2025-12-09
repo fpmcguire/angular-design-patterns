@@ -2,6 +2,14 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
 
+## Author
+
+Frank McGuire (26.11.2025)
+
+This is an experiemntal project to explore the features of Angular v.21 and the use of AI for generating code.
+
+The content is intended to be instructive and documentative. 
+
 ## Development server
 
 To start a local development server, run:

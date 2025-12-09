@@ -5,9 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:angular-design-patterns": "node dist/angular-design-patterns/server/server.mjs",
+    "#serve:ssr:angular-design-patterns": "node dist/angular-design-patterns/server/server.mjs",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "format": "prettier \"src/**/*.{ts,html,scss,css,js,json}\" --write"
