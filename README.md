@@ -2,13 +2,13 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
 
+This is an experimental project to explore the features of Angular v.21 and the use of AI for generating code.
+
+The content is intended to be both instructive and documentative.
+
 ## Author
 
 Frank McGuire (26.11.2025)
-
-This is an experiemntal project to explore the features of Angular v.21 and the use of AI for generating code.
-
-The content is intended to be instructive and documentative. 
 
 ## Development server
 
@@ -34,15 +34,21 @@ For a complete list of available schematics (such as `components`, `directives`,
 ng generate --help`
 ```
 
-## Building
+## Build Scripts
 
-To build the project run:
+The `package.json` file includes several build-related scripts to streamline development and deployment workflows:
+
+- **`build`**: Compiles the project and outputs the build artifacts to the `dist/` directory. This is the default build command.
+- **`build:prod`**: Builds the project using the production configuration, optimizing for performance and speed.
+- **`watch`**: Continuously watches for changes and rebuilds the project in development mode.
+
+To execute these scripts, use the following commands:
 
 ```bash
-ng build
+npm run build       # Default build
+npm run build:prod  # Production build
+npm run watch       # Watch mode
 ```
-
-This will compile your project and store the build artifacts in the dist/ directory. By default, the production build optimizes your application for performance and speed.
 
 ## Running unit tests
 
@@ -65,6 +71,8 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ---
 
 ## 🚀 Deployment to InMotion Hosting (Static Site)
+
+See: DEPLOY_INMOTION.md
 
 InMotion Hosting shared servers run **Node.js 10**, which is not compatible with Angular 21’s SSR mode.  
 To deploy successfully, the application must be built as a **fully static SPA** instead of SSR.
