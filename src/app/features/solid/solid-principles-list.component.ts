@@ -1,6 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SOLID_PRINCIPLES, SolidPrinciple, SolidCategory } from './solid-principles.data';
+import { SOLID_PRINCIPLES, SolidCategory } from './solid-principles.data';
 
 @Component({
   selector: 'app-solid-principles-list',
@@ -14,10 +14,10 @@ export class SolidPrinciplesListComponent {
   readonly principles = SOLID_PRINCIPLES;
   readonly categories: SolidCategory[] = Array.from(
     new Set(this.principles.map(p => p.category))
-  );
+  ) as SolidCategory[];
 
   private readonly selectedCategorySignal = signal<SolidCategory | null>(null);
-  readonly filtered = computed<SolidPrinciple[]>(() => {
+  readonly filtered = computed(() => {
     const cat = this.selectedCategorySignal();
     if (!cat) return this.principles;
     return this.principles.filter(p => p.category === cat);

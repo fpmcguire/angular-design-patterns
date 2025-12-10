@@ -20,7 +20,7 @@ export class ReactivePrincipleDetailComponent {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    const found = REACTIVE_PRINCIPLES.find(p => p.id === id) ?? null;
+    const found = REACTIVE_PRINCIPLES.find(p => p.id === id) as ReactivePrinciple | undefined ?? null;
     this.principleSignal.set(found);
   }
 }

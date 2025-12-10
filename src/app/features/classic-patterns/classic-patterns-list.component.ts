@@ -1,6 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CLASSIC_PATTERNS, ClassicPattern, ClassicPatternCategory } from './classic-patterns.data';
+import { CLASSIC_PATTERNS, ClassicPatternCategory } from './classic-patterns.data';
 
 @Component({
   selector: 'app-classic-patterns-list',

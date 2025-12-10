@@ -1,10 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  FRONTEND_ARCH_PRINCIPLES,
-  FrontendArchPrinciple,
-  FrontendArchCategory
-} from './frontend-architecture-principles.data';
+import { FRONTEND_ARCH_PRINCIPLES, FrontendArchCategory } from './frontend-architecture-principles.data';
 
 @Component({
   selector: 'app-frontend-architecture-principles-list',
@@ -18,10 +14,10 @@ export class FrontendArchitecturePrinciplesListComponent {
   readonly principles = FRONTEND_ARCH_PRINCIPLES;
   readonly categories: FrontendArchCategory[] = Array.from(
     new Set(this.principles.map(p => p.category))
-  );
+  ) as FrontendArchCategory[];
 
   private readonly selectedCategorySignal = signal<FrontendArchCategory | null>(null);
-  readonly filtered = computed<FrontendArchPrinciple[]>(() => {
+  readonly filtered = computed(() => {
     const cat = this.selectedCategorySignal();
     if (!cat) return this.principles;
     return this.principles.filter(p => p.category === cat);

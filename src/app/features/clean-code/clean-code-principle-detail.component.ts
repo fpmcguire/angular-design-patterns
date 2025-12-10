@@ -18,7 +18,7 @@ export class CleanCodePrincipleDetailComponent {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    const found = CLEAN_CODE_PRINCIPLES.find(p => p.id === id) ?? null;
+    const found = CLEAN_CODE_PRINCIPLES.find(p => p.id === id) as CleanCodePrinciple | undefined ?? null;
     this.principleSignal.set(found);
   }
 }

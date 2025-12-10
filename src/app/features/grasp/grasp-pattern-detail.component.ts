@@ -18,7 +18,7 @@ export class GraspPatternDetailComponent {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    const found = GRASP_PATTERNS.find(p => p.id === id) ?? null;
+    const found = GRASP_PATTERNS.find(p => p.id === id) as GraspPattern | null ?? null;
     this.patternSignal.set(found);
   }
 }

@@ -13,217 +13,224 @@ export interface ReactivePrinciple {
   exampleHtml?: string;
 }
 
-export const REACTIVE_PRINCIPLES: ReactivePrinciple[] = [
-  {
-    id: 'streams-as-source-of-truth',
-    name: 'Streams as Source of Truth',
-    category: 'Streams',
-    shortDescription: 'Represent key pieces of state as Observables instead of ad-hoc fields.',
-    description:
-      'In a reactive Angular app, important state (users, filters, loading flags) is exposed as streams (e.g. users$) and the UI is derived from those streams using the async pipe, not manual mutation.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import reactivePrinciples from './reactive-principles.json';
 
-export interface User {
-  id: number;
-  name: string;
-}
+export const REACTIVE_PRINCIPLES = reactivePrinciples.map(principle => ({
+  ...principle,
+  exampleTs: principle.exampleTs?.join('\n')
+}));
 
-@Injectable({ providedIn: 'root' })
-export class UsersStore {
-  private readonly usersSubject = new BehaviorSubject<User[]>([]);
-  readonly users$: Observable<User[]> = this.usersSubject.asObservable();
+// export const REACTIVE_PRINCIPLES: ReactivePrinciple[] = [
+//   {
+//     id: 'streams-as-source-of-truth',
+//     name: 'Streams as Source of Truth',
+//     category: 'Streams',
+//     shortDescription: 'Represent key pieces of state as Observables instead of ad-hoc fields.',
+//     description:
+//       'In a reactive Angular app, important state (users, filters, loading flags) is exposed as streams (e.g. users$) and the UI is derived from those streams using the async pipe, not manual mutation.',
+//     exampleTs: `
+// import { Injectable } from '@angular/core';
+// import { BehaviorSubject, Observable } from 'rxjs';
 
-  set(users: User[]) {
-    this.usersSubject.next(users);
-  }
+// export interface User {
+//   id: number;
+//   name: string;
+// }
 
-  add(user: User) {
-    this.usersSubject.next([...this.usersSubject.value, user]);
-  }
-}
+// @Injectable({ providedIn: 'root' })
+// export class UsersStore {
+//   private readonly usersSubject = new BehaviorSubject<User[]>([]);
+//   readonly users$: Observable<User[]> = this.usersSubject.asObservable();
 
-// In a component:
-// users$ = this.usersStore.users$;
-// template: <li *ngFor="let u of users$ | async">{{ u.name }}</li>
-    `.trim()
-  },
-  {
-    id: 'push-over-pull',
-    name: 'Push over Pull',
-    category: 'Streams',
-    shortDescription: 'Push changes into streams and let consumers react, instead of pulling values on demand.',
-    description:
-      'Rather than imperatively asking for the latest data everywhere, emit changes into Subjects/Stores and consume them via async templates or derived streams.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+//   set(users: User[]) {
+//     this.usersSubject.next(users);
+//   }
 
-@Injectable({ providedIn: 'root' })
-export class CounterStore {
-  private readonly countSubject = new BehaviorSubject<number>(0);
-  readonly count$ = this.countSubject.asObservable();
-  readonly isEven$ = this.count$.pipe(map(c => c % 2 === 0));
+//   add(user: User) {
+//     this.usersSubject.next([...this.usersSubject.value, user]);
+//   }
+// }
 
-  inc() { this.countSubject.next(this.countSubject.value + 1); }
-  dec() { this.countSubject.next(this.countSubject.value - 1); }
-}
+// // In a component:
+// // users$ = this.usersStore.users$;
+// // template: <li *ngFor="let u of users$ | async">{{ u.name }}</li>
+//     `.trim()
+//   },
+//   {
+//     id: 'push-over-pull',
+//     name: 'Push over Pull',
+//     category: 'Streams',
+//     shortDescription: 'Push changes into streams and let consumers react, instead of pulling values on demand.',
+//     description:
+//       'Rather than imperatively asking for the latest data everywhere, emit changes into Subjects/Stores and consume them via async templates or derived streams.',
+//     exampleTs: `
+// import { Injectable } from '@angular/core';
+// import { BehaviorSubject, map } from 'rxjs';
 
-// Component uses push-based updates via async pipe:
-// <button (click)="store.dec()">-</button>
-// <span>{{ store.count$ | async }}</span>
-// <button (click)="store.inc()">+</button>
-    `.trim()
-  },
-  {
-    id: 'avoid-nested-subscriptions',
-    name: 'Avoid Nested Subscriptions',
-    category: 'Composition',
-    shortDescription: 'Use higher-order mapping operators (switchMap, mergeMap, concatMap) instead of subscribe-inside-subscribe.',
-    description:
-      'Nested subscriptions are hard to manage and clean up; RxJS composition keeps data flows linear and easier to test, and Angular’s async pipe cleans up subscriptions automatically.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject, switchMap } from 'rxjs';
+// @Injectable({ providedIn: 'root' })
+// export class CounterStore {
+//   private readonly countSubject = new BehaviorSubject<number>(0);
+//   readonly count$ = this.countSubject.asObservable();
+//   readonly isEven$ = this.count$.pipe(map(c => c % 2 === 0));
 
-@Injectable({ providedIn: 'root' })
-export class SearchService {
-  private readonly querySubject = new Subject<string>();
-  readonly results$ = this.querySubject.pipe(
-    // every new query cancels the previous HTTP call
-    switchMap(q => this.http.get('/api/search', { params: { q } }))
-  );
+//   inc() { this.countSubject.next(this.countSubject.value + 1); }
+//   dec() { this.countSubject.next(this.countSubject.value - 1); }
+// }
 
-  constructor(private http: HttpClient) {}
+// // Component uses push-based updates via async pipe:
+// // <button (click)="store.dec()">-</button>
+// // <span>{{ store.count$ | async }}</span>
+// // <button (click)="store.inc()">+</button>
+//     `.trim()
+//   },
+//   {
+//     id: 'avoid-nested-subscriptions',
+//     name: 'Avoid Nested Subscriptions',
+//     category: 'Composition',
+//     shortDescription: 'Use higher-order mapping operators (switchMap, mergeMap, concatMap) instead of subscribe-inside-subscribe.',
+//     description:
+//       'Nested subscriptions are hard to manage and clean up; RxJS composition keeps data flows linear and easier to test, and Angular’s async pipe cleans up subscriptions automatically.',
+//     exampleTs: `
+// import { Injectable } from '@angular/core';
+// import { HttpClient } from '@angular/common/http';
+// import { Subject, switchMap } from 'rxjs';
 
-  search(query: string) {
-    this.querySubject.next(query);
-  }
-}
-    `.trim(),
-    exampleHtml: `
-<!-- Component template -->
-<input
-  type="search"
-  placeholder="Search"
-  (input)="searchService.search($event.target.value)"
-/>
+// @Injectable({ providedIn: 'root' })
+// export class SearchService {
+//   private readonly querySubject = new Subject<string>();
+//   readonly results$ = this.querySubject.pipe(
+//     // every new query cancels the previous HTTP call
+//     switchMap(q => this.http.get('/api/search', { params: { q } }))
+//   );
 
-<ul>
-  <li *ngFor="let r of searchService.results$ | async">
-    {{ r | json }}
-  </li>
-</ul>
-    `.trim()
-  },
-  {
-    id: 'choose-right-flattening',
-    name: 'Choose the Right Flattening Strategy',
-    category: 'Composition',
-    shortDescription: 'Pick switchMap / mergeMap / concatMap / exhaustMap based on how you want concurrent work handled.',
-    description:
-      'Reactive flows often involve streams of events that trigger async work; choosing the right flattening operator controls cancellation, ordering, and concurrency behavior.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject, concatMap, mergeMap, switchMap, exhaustMap } from 'rxjs';
+//   constructor(private http: HttpClient) {}
 
-@Injectable({ providedIn: 'root' })
-export class ReactiveExamplesService {
-  private readonly saveClicks = new Subject<any>();
-  readonly save$ = this.saveClicks.pipe(
-    // Example: queue saves one after another
-    concatMap(payload => this.http.post('/api/save', payload))
-    // Other options:
-    // switchMap  -> cancel previous and keep latest
-    // mergeMap   -> run all in parallel
-    // exhaustMap -> ignore new clicks while one is in flight
-  );
+//   search(query: string) {
+//     this.querySubject.next(query);
+//   }
+// }
+//     `.trim(),
+//     exampleHtml: `
+// <!-- Component template -->
+// <input
+//   type="search"
+//   placeholder="Search"
+//   (input)="searchService.search($event.target.value)"
+// />
 
-  constructor(private http: HttpClient) {}
+// <ul>
+//   <li *ngFor="let r of searchService.results$ | async">
+//     {{ r | json }}
+//   </li>
+// </ul>
+//     `.trim()
+//   },
+//   {
+//     id: 'choose-right-flattening',
+//     name: 'Choose the Right Flattening Strategy',
+//     category: 'Composition',
+//     shortDescription: 'Pick switchMap / mergeMap / concatMap / exhaustMap based on how you want concurrent work handled.',
+//     description:
+//       'Reactive flows often involve streams of events that trigger async work; choosing the right flattening operator controls cancellation, ordering, and concurrency behavior.',
+//     exampleTs: `
+// import { Injectable } from '@angular/core';
+// import { HttpClient } from '@angular/common/http';
+// import { Subject, concatMap, mergeMap, switchMap, exhaustMap } from 'rxjs';
 
-  requestSave(payload: any) {
-    this.saveClicks.next(payload);
-  }
-}
-    `.trim()
-  },
-  {
-    id: 'handle-errors-reactively',
-    name: 'Handle Errors Reactively',
-    category: 'Errors & Lifecycle',
-    shortDescription: 'Treat errors as part of the stream, not as an afterthought.',
-    description:
-      'Use operators like catchError, retry, and onErrorResumeNext to handle failures in a centralized, composable way instead of scatter-gunning try/catch blocks.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, of, startWith } from 'rxjs';
+// @Injectable({ providedIn: 'root' })
+// export class ReactiveExamplesService {
+//   private readonly saveClicks = new Subject<any>();
+//   readonly save$ = this.saveClicks.pipe(
+//     // Example: queue saves one after another
+//     concatMap(payload => this.http.post('/api/save', payload))
+//     // Other options:
+//     // switchMap  -> cancel previous and keep latest
+//     // mergeMap   -> run all in parallel
+//     // exhaustMap -> ignore new clicks while one is in flight
+//   );
 
-export interface LoadState<T> {
-  loading: boolean;
-  data: T | null;
-  error: string | null;
-}
+//   constructor(private http: HttpClient) {}
 
-@Injectable({ providedIn: 'root' })
-export class ProductsQuery {
-  readonly state$ = this.http.get<any[]>('/api/products').pipe(
-    // map() omitted for brevity
-    catchError(() => of({ loading: false, data: null, error: 'Failed to load products.' })),
-    startWith({ loading: true, data: null, error: null })
-  );
+//   requestSave(payload: any) {
+//     this.saveClicks.next(payload);
+//   }
+// }
+//     `.trim()
+//   },
+//   {
+//     id: 'handle-errors-reactively',
+//     name: 'Handle Errors Reactively',
+//     category: 'Errors & Lifecycle',
+//     shortDescription: 'Treat errors as part of the stream, not as an afterthought.',
+//     description:
+//       'Use operators like catchError, retry, and onErrorResumeNext to handle failures in a centralized, composable way instead of scatter-gunning try/catch blocks.',
+//     exampleTs: `
+// import { Injectable } from '@angular/core';
+// import { HttpClient } from '@angular/common/http';
+// import { catchError, of, startWith } from 'rxjs';
 
-  constructor(private http: HttpClient) {}
-}
-    `.trim(),
-    exampleHtml: `
-<ng-container @if="productsQuery.state$ | async as s">
-  <p @if="s.loading">Loading...</p>
-  <p @if="s.error">{{ s.error }}</p>
-  <ul @if="s.data">
-    <li *ngFor="let p of s.data">
-      {{ p.name }}
-    </li>
-  </ul>
-</ng-container>
-    `.trim()
-  },
-  {
-    id: 'lifecycle-and-cleanup',
-    name: 'Lifecycle & Cleanup',
-    category: 'Errors & Lifecycle',
-    shortDescription: 'Ensure subscriptions are cleaned up when components are destroyed.',
-    description:
-      'While the async pipe handles cleanup for template subscriptions, manual subscriptions in components should use takeUntil, signal-based cleanup, or other strategies to avoid memory leaks.',
-    exampleTs: `
-import { Component, OnDestroy } from '@angular/core';
-import { Subject, interval, takeUntil } from 'rxjs';
+// export interface LoadState<T> {
+//   loading: boolean;
+//   data: T | null;
+//   error: string | null;
+// }
 
-@Component({
-  selector: 'app-ticker',
-  standalone: true,
-  template: \`
-    <p>Tick: {{ tick }}</p>
-  \`
-})
-export class TickerComponent implements OnDestroy {
-  private readonly destroy$ = new Subject<void>();
-  tick = 0;
+// @Injectable({ providedIn: 'root' })
+// export class ProductsQuery {
+//   readonly state$ = this.http.get<any[]>('/api/products').pipe(
+//     // map() omitted for brevity
+//     catchError(() => of({ loading: false, data: null, error: 'Failed to load products.' })),
+//     startWith({ loading: true, data: null, error: null })
+//   );
 
-  constructor() {
-    interval(1000)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(v => this.tick = v);
-  }
+//   constructor(private http: HttpClient) {}
+// }
+//     `.trim(),
+//     exampleHtml: `
+// <ng-container @if="productsQuery.state$ | async as s">
+//   <p @if="s.loading">Loading...</p>
+//   <p @if="s.error">{{ s.error }}</p>
+//   <ul @if="s.data">
+//     <li *ngFor="let p of s.data">
+//       {{ p.name }}
+//     </li>
+//   </ul>
+// </ng-container>
+//     `.trim()
+//   },
+//   {
+//     id: 'lifecycle-and-cleanup',
+//     name: 'Lifecycle & Cleanup',
+//     category: 'Errors & Lifecycle',
+//     shortDescription: 'Ensure subscriptions are cleaned up when components are destroyed.',
+//     description:
+//       'While the async pipe handles cleanup for template subscriptions, manual subscriptions in components should use takeUntil, signal-based cleanup, or other strategies to avoid memory leaks.',
+//     exampleTs: `
+// import { Component, OnDestroy } from '@angular/core';
+// import { Subject, interval, takeUntil } from 'rxjs';
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-}
-    `.trim()
-  }
-];
+// @Component({
+//   selector: 'app-ticker',
+//   standalone: true,
+//   template: \`
+//     <p>Tick: {{ tick }}</p>
+//   \`
+// })
+// export class TickerComponent implements OnDestroy {
+//   private readonly destroy$ = new Subject<void>();
+//   tick = 0;
+
+//   constructor() {
+//     interval(1000)
+//       .pipe(takeUntil(this.destroy$))
+//       .subscribe(v => this.tick = v);
+//   }
+
+//   ngOnDestroy(): void {
+//     this.destroy$.next();
+//     this.destroy$.complete();
+//   }
+// }
+//     `.trim()
+//   }
+// ];

@@ -18,7 +18,7 @@ export class SolidPrincipleDetailComponent {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    const found = SOLID_PRINCIPLES.find(p => p.id === id) ?? null;
+    const found = SOLID_PRINCIPLES.find(p => p.id === id) as SolidPrinciple | undefined ?? null;
     this.principleSignal.set(found);
   }
 }

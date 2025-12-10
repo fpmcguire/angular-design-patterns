@@ -16,162 +16,169 @@ export interface SolidPrinciple {
   exampleHtml?: string;
 }
 
-export const SOLID_PRINCIPLES: SolidPrinciple[] = [
-  {
-    id: 'srp',
-    name: 'Single Responsibility Principle',
-    letter: 'S',
-    category: 'Single Responsibility',
-    shortDescription: 'A class should have only one reason to change.',
-    description:
-      'In Angular, SRP often means separating HTTP, mapping, logging, and UI logic into different services/components so each unit has one clear responsibility.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import solidPrinciples from './solid-principles.json';
 
-@Injectable({ providedIn: 'root' })
-export class UserApi {
-  constructor(private http: HttpClient) {}
-  loadUsers() {
-    return this.http.get('/api/users');
-  }
-}
+export const SOLID_PRINCIPLES = solidPrinciples.map(principle => ({
+  ...principle,
+  exampleTs: principle.exampleTs?.join('\n')
+}));
 
-@Injectable({ providedIn: 'root' })
-export class UserLogger {
-  log(message: string) {
-    console.log('[User]', message);
-  }
-}
+// export const SOLID_PRINCIPLES: SolidPrinciple[] = [
+//   {
+//     id: 'srp',
+//     name: 'Single Responsibility Principle',
+//     letter: 'S',
+//     category: 'Single Responsibility',
+//     shortDescription: 'A class should have only one reason to change.',
+//     description:
+//       'In Angular, SRP often means separating HTTP, mapping, logging, and UI logic into different services/components so each unit has one clear responsibility.',
+//     exampleTs: `
+// import { Injectable } from '@angular/core';
+// import { HttpClient } from '@angular/common/http';
 
-// Instead of one "God service" doing HTTP + logging + formatting,
-// we split responsibilities into separate services.
-    `.trim()
-  },
-  {
-    id: 'ocp',
-    name: 'Open/Closed Principle',
-    letter: 'O',
-    category: 'Open/Closed',
-    shortDescription: 'Software entities should be open for extension, but closed for modification.',
-    description:
-      'With Angular, you can extend behavior by introducing new classes or providers (e.g., new strategies) instead of modifying existing code paths.',
-    exampleTs: `
-import { Injectable } from '@angular/core';
+// @Injectable({ providedIn: 'root' })
+// export class UserApi {
+//   constructor(private http: HttpClient) {}
+//   loadUsers() {
+//     return this.http.get('/api/users');
+//   }
+// }
 
-export abstract class NotificationChannel {
-  abstract send(message: string): void;
-}
+// @Injectable({ providedIn: 'root' })
+// export class UserLogger {
+//   log(message: string) {
+//     console.log('[User]', message);
+//   }
+// }
 
-@Injectable()
-export class EmailChannel extends NotificationChannel {
-  send(message: string) {
-    console.log('Send EMAIL:', message);
-  }
-}
+// // Instead of one "God service" doing HTTP + logging + formatting,
+// // we split responsibilities into separate services.
+//     `.trim()
+//   },
+//   {
+//     id: 'ocp',
+//     name: 'Open/Closed Principle',
+//     letter: 'O',
+//     category: 'Open/Closed',
+//     shortDescription: 'Software entities should be open for extension, but closed for modification.',
+//     description:
+//       'With Angular, you can extend behavior by introducing new classes or providers (e.g., new strategies) instead of modifying existing code paths.',
+//     exampleTs: `
+// import { Injectable } from '@angular/core';
 
-@Injectable()
-export class SmsChannel extends NotificationChannel {
-  send(message: string) {
-    console.log('Send SMS:', message);
-  }
-}
+// export abstract class NotificationChannel {
+//   abstract send(message: string): void;
+// }
 
-// Higher-level code depends on NotificationChannel,
-// so adding a PushChannel does not require changing that code.
-    `.trim()
-  },
-  {
-    id: 'lsp',
-    name: 'Liskov Substitution Principle',
-    letter: 'L',
-    category: 'Liskov Substitution',
-    shortDescription:
-      'Subtypes must be substitutable for their base types without breaking correctness.',
-    description:
-      'In Angular/TS, any subclass or implementation used via an interface should behave in a way that does not surprise or break callers that expect the abstraction.',
-    exampleTs: `
-export abstract class AuthToken {
-  abstract get value(): string;
-}
+// @Injectable()
+// export class EmailChannel extends NotificationChannel {
+//   send(message: string) {
+//     console.log('Send EMAIL:', message);
+//   }
+// }
 
-export class JwtToken extends AuthToken {
-  constructor(private raw: string) { super(); }
-  get value() {
-    return this.raw;
-  }
-}
+// @Injectable()
+// export class SmsChannel extends NotificationChannel {
+//   send(message: string) {
+//     console.log('Send SMS:', message);
+//   }
+// }
 
-export class ApiKeyToken extends AuthToken {
-  constructor(private key: string) { super(); }
-  get value() {
-    return this.key;
-  }
-}
+// // Higher-level code depends on NotificationChannel,
+// // so adding a PushChannel does not require changing that code.
+//     `.trim()
+//   },
+//   {
+//     id: 'lsp',
+//     name: 'Liskov Substitution Principle',
+//     letter: 'L',
+//     category: 'Liskov Substitution',
+//     shortDescription:
+//       'Subtypes must be substitutable for their base types without breaking correctness.',
+//     description:
+//       'In Angular/TS, any subclass or implementation used via an interface should behave in a way that does not surprise or break callers that expect the abstraction.',
+//     exampleTs: `
+// export abstract class AuthToken {
+//   abstract get value(): string;
+// }
 
-// Any code using AuthToken can work with JwtToken or ApiKeyToken
-// without caring about which concrete subtype it receives.
-    `.trim()
-  },
-  {
-    id: 'isp',
-    name: 'Interface Segregation Principle',
-    letter: 'I',
-    category: 'Interface Segregation',
-    shortDescription: 'Clients should not be forced to depend on methods they do not use.',
-    description:
-      'Instead of giant “fat” interfaces, define smaller, focused interfaces and inject only what each consumer actually needs.',
-    exampleTs: `
-export interface CanSave {
-  save(): void;
-}
+// export class JwtToken extends AuthToken {
+//   constructor(private raw: string) { super(); }
+//   get value() {
+//     return this.raw;
+//   }
+// }
 
-export interface CanLoad {
-  load(): void;
-}
+// export class ApiKeyToken extends AuthToken {
+//   constructor(private key: string) { super(); }
+//   get value() {
+//     return this.key;
+//   }
+// }
 
-// Components that only save depend on CanSave;
-// components that only load depend on CanLoad,
-// instead of a single big interface with save+load+delete+...
-    `.trim()
-  },
-  {
-    id: 'dip',
-    name: 'Dependency Inversion Principle',
-    letter: 'D',
-    category: 'Dependency Inversion',
-    shortDescription:
-      'High-level modules should not depend on low-level modules; both should depend on abstractions.',
-    description:
-      'Angular’s DI system is a direct implementation of DIP: you inject abstractions (interfaces via tokens) instead of new-ing up concrete classes.',
-    exampleTs: `
-import { InjectionToken, Inject, Injectable } from '@angular/core';
+// // Any code using AuthToken can work with JwtToken or ApiKeyToken
+// // without caring about which concrete subtype it receives.
+//     `.trim()
+//   },
+//   {
+//     id: 'isp',
+//     name: 'Interface Segregation Principle',
+//     letter: 'I',
+//     category: 'Interface Segregation',
+//     shortDescription: 'Clients should not be forced to depend on methods they do not use.',
+//     description:
+//       'Instead of giant “fat” interfaces, define smaller, focused interfaces and inject only what each consumer actually needs.',
+//     exampleTs: `
+// export interface CanSave {
+//   save(): void;
+// }
 
-export interface Clock {
-  now(): Date;
-}
+// export interface CanLoad {
+//   load(): void;
+// }
 
-export const CLOCK = new InjectionToken<Clock>('CLOCK');
+// // Components that only save depend on CanSave;
+// // components that only load depend on CanLoad,
+// // instead of a single big interface with save+load+delete+...
+//     `.trim()
+//   },
+//   {
+//     id: 'dip',
+//     name: 'Dependency Inversion Principle',
+//     letter: 'D',
+//     category: 'Dependency Inversion',
+//     shortDescription:
+//       'High-level modules should not depend on low-level modules; both should depend on abstractions.',
+//     description:
+//       'Angular’s DI system is a direct implementation of DIP: you inject abstractions (interfaces via tokens) instead of new-ing up concrete classes.',
+//     exampleTs: `
+// import { InjectionToken, Inject, Injectable } from '@angular/core';
 
-@Injectable()
-export class SystemClock implements Clock {
-  now(): Date {
-    return new Date();
-  }
-}
+// export interface Clock {
+//   now(): Date;
+// }
 
-@Injectable({ providedIn: 'root' })
-export class ReportService {
-  constructor(@Inject(CLOCK) private clock: Clock) {}
+// export const CLOCK = new InjectionToken<Clock>('CLOCK');
 
-  generate() {
-    const timestamp = this.clock.now();
-    console.log('Report generated at', timestamp.toISOString());
-  }
-}
+// @Injectable()
+// export class SystemClock implements Clock {
+//   now(): Date {
+//     return new Date();
+//   }
+// }
 
-// In a module or bootstrap providers:
-// { provide: CLOCK, useClass: SystemClock }
-    `.trim()
-  }
-];
+// @Injectable({ providedIn: 'root' })
+// export class ReportService {
+//   constructor(@Inject(CLOCK) private clock: Clock) {}
+
+//   generate() {
+//     const timestamp = this.clock.now();
+//     console.log('Report generated at', timestamp.toISOString());
+//   }
+// }
+
+// // In a module or bootstrap providers:
+// // { provide: CLOCK, useClass: SystemClock }
+//     `.trim()
+//   }
+// ];

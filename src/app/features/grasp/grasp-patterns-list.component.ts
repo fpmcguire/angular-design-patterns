@@ -1,6 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { GRASP_PATTERNS, GraspPattern, GraspCategory } from './grasp-patterns.data';
+import { GRASP_PATTERNS, GraspCategory } from './grasp-patterns.data';
 
 @Component({
   selector: 'app-grasp-patterns-list',
@@ -14,10 +14,10 @@ export class GraspPatternsListComponent {
   readonly patterns = GRASP_PATTERNS;
   readonly categories: GraspCategory[] = Array.from(
     new Set(this.patterns.map(p => p.category))
-  );
+  ) as GraspCategory[];
 
   private readonly selectedCategorySignal = signal<GraspCategory | null>(null);
-  readonly filtered = computed<GraspPattern[]>(() => {
+  readonly filtered = computed(() => {
     const cat = this.selectedCategorySignal();
     if (!cat) return this.patterns;
     return this.patterns.filter(p => p.category === cat);

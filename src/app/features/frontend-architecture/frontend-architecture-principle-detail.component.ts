@@ -21,7 +21,7 @@ export class FrontendArchitecturePrincipleDetailComponent {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    const found = FRONTEND_ARCH_PRINCIPLES.find(p => p.id === id) ?? null;
+    const found = FRONTEND_ARCH_PRINCIPLES.find(p => p.id === id) as FrontendArchPrinciple | undefined ?? null;
     this.principleSignal.set(found);
   }
 }
