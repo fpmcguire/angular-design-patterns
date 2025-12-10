@@ -18,7 +18,11 @@ export interface Pattern {
 }
 import patterns from './patterns.json';
 
-export const PATTERNS = patterns;
+export const PATTERNS = patterns.map(pattern => ({
+  ...pattern,
+  exampleTs: pattern.exampleTs?.join('\n'),
+  exampleHtml: pattern.exampleHtml?.join('\n')
+}));
 
 // export const PATTERNS: Pattern[] = [
 //   {

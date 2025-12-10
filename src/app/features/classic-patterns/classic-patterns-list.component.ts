@@ -14,10 +14,10 @@ export class ClassicPatternsListComponent {
   readonly patterns = CLASSIC_PATTERNS;
   readonly categories: ClassicPatternCategory[] = Array.from(
     new Set(this.patterns.map(p => p.category))
-  );
+  ) as ClassicPatternCategory[];
 
   private readonly selectedCategorySignal = signal<ClassicPatternCategory | null>(null);
-  readonly filteredPatterns = computed<ClassicPattern[]>(() => {
+  readonly filteredPatterns = computed(() => {
     const cat = this.selectedCategorySignal();
     if (!cat) return this.patterns;
     return this.patterns.filter(p => p.category === cat);

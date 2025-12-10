@@ -19,7 +19,7 @@ export class ClassicPatternDetailComponent {
 
   constructor() {
     const id = this.route.snapshot.paramMap.get('id');
-    const found = CLASSIC_PATTERNS.find(p => p.id === id) ?? null;
+    const found = CLASSIC_PATTERNS.find(p => p.id === id) as ClassicPattern | undefined ?? null;
     this.patternSignal.set(found);
   }
 
