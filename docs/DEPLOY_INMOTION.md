@@ -13,6 +13,16 @@ This file explains the exact steps to build and deploy the static (non-SSR) Angu
 - Access to your inMotionHosting FTP/cPanel credentials
 - An FTP client (FileZilla) or use the cPanel File Manager
 
+## Pre-deployment checks
+
+Before deploying, ensure all tests pass:
+
+```powershell
+npm run lint          # Check code quality
+npm test -- --run     # Run unit/component tests
+npm run e2e           # Run E2E tests
+```
+
 ## Commands (PowerShell)
 
 1. Install dependencies (strict):

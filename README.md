@@ -50,31 +50,55 @@ npm run build:prod  # Production build
 npm run watch       # Watch mode
 ```
 
-## Running unit tests
+## Testing
 
-To execute unit tests with the Karma test runner, use:
+This project uses **Vitest** for unit and component tests, and **Playwright** for end-to-end (E2E) tests. See [TESTING-STANDARDS-GUIDE.md](docs/TESTING-STANDARDS-GUIDE.md) for detailed testing standards, patterns, and best practices using `data-testid` selectors.
 
-```bash
-ng test
-```
+### Running unit & component tests
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+To execute unit and component tests with Vitest:
 
 ```bash
-ng e2e
+npm test
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Run tests in watch mode:
 
-Playwright is installed and setup is completed.
+```bash
+npm test -- --watch
+```
+
+Run tests with coverage:
+
+```bash
+npm test -- --coverage
+```
+
+### Running end-to-end tests
+
+To execute E2E tests with Playwright:
+
+```bash
+npm run e2e
+```
+
+Run a specific test file:
+
+```bash
+npm run e2e -- homepage.spec.ts
+```
+
+View the test report:
+
+```bash
+npm run e2e:report
+```
 
 ---
 
 ## 🚀 Deployment to InMotion Hosting (Static Site)
 
-See: DEPLOY_INMOTION.md
+See: [docs/DEPLOY_INMOTION.md](docs/DEPLOY_INMOTION.md)
 
 InMotion Hosting shared servers run **Node.js 10**, which is not compatible with Angular 21’s SSR mode.  
 To deploy successfully, the application must be built as a **fully static SPA** instead of SSR.
