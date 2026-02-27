@@ -6,6 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
+    "build:prod:root": "ng build --configuration production --base-href /",
+    "build:prod:inmotion": "ng build --configuration production --base-href /angular-design-patterns/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",

@@ -112,13 +112,13 @@ To deploy successfully, the application must be built as a **fully static SPA** 
 ### ✔ 2. Build for production
 
 ```bash
-ng build --configuration=production
+npm run build:prod:root
 ```
 
 -- OR -- for subdirectory deployment (/angular-design-patterns)
 
 ```bash
-npx ng build --configuration=production --base-href /angular-design-patterns/
+npm run build:prod:inmotion
 ```
 
 ### ✔ 3. Upload static files to public_html/
@@ -128,6 +128,14 @@ Upload:
 ```
 dist/angular-design-patterns/browser/
 ```
+
+If the page shows only the spinner and browser DevTools shows `main.*.js` / `styles.*.css` 404 errors, rebuild with:
+
+```bash
+npm run build:prod:inmotion
+```
+
+Use `npm run build:prod:root` only when deploying at domain root (`/`).
 
 ### ✔ 4. Add .htaccess for routing
 

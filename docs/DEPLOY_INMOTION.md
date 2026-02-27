@@ -40,15 +40,23 @@ npm install --legacy-peer-deps
 2. Build the static production bundle
 
 ```powershell
-npm run build:prod
+npm run build:prod:root
 ```
+
+For subdirectory deployment at `/angular-design-patterns/`, use:
+
+```powershell
+npm run build:prod:inmotion
+```
+
+Use `build:prod:root` only when the app is served from domain root (`/`).
 
 This writes files to `dist/angular-design-patterns/`.
 
 ## What to upload
 
-- Upload the _contents_ of `dist/angular-design-patterns/` (not the folder itself) into your inMotionHosting site root (commonly `public_html/` for the primary domain or the appropriate domain/subdomain folder).
-- Files you should see in the `dist` folder: `index.html`, `assets/`, `styles.*.css`, `main.*.js`, `runtime.*.js`, and other hashed files.
+- Upload the _contents_ of `dist/angular-design-patterns/browser/` (not the folder itself) into your inMotionHosting site root (commonly `public_html/` for the primary domain or the appropriate domain/subdomain folder).
+- Files you should see in the upload source folder: `index.html`, `assets/`, `styles.*.css`, `main.*.js`, and other hashed files.
 
 ## Using FileZilla (example)
 
@@ -56,7 +64,7 @@ This writes files to `dist/angular-design-patterns/`.
 - Username: (your FTP username)
 - Password: (your FTP password)
 - Port: 21 (or as provided)
-- Connect, navigate to `public_html/`, then upload all files & folders from `dist/angular-design-patterns/` into `public_html/`.
+- Connect, navigate to `public_html/`, then upload all files & folders from `dist/angular-design-patterns/browser/` into `public_html/`.
 
 ## Using cPanel File Manager
 
@@ -99,6 +107,19 @@ If your app uses Angular client-side routes (non-hash URLs), add a `.htaccess` f
 
 - Visit your site (https://yourdomain.com). The app should load and client-side navigation should work.
 - If you see server errors or a blank page, open browser DevTools Console and Network tab to check for missing files or 404s.
+
+### Common fix for spinner + JS/CSS 404 errors
+
+If you only see the loader spinner and errors like `main-*.js 404` or `styles-*.css 404`:
+
+1. Rebuild with the correct base href for subdirectory hosting:
+
+```powershell
+npm run build:prod:inmotion
+```
+
+2. Re-upload contents of `dist/angular-design-patterns/browser/`.
+3. Ensure `.htaccess` `RewriteBase` matches your deploy path (`/` for root, `/angular-design-patterns/` for subdirectory).
 
 ## Security & cleanup notes
 
