@@ -8,5 +8,5 @@
     "dist": true,
     "node_modules": false
   },
-  "conventionalCommits.scopes": ["ui"]
+  "conventionalCommits.scopes": ["ui", "app"]
 }
