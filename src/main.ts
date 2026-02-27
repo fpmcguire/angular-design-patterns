@@ -7,8 +7,5 @@ import { AppComponent } from './app/app.component';
 import { loadingInterceptor } from './app/shared/utils/loading.interceptor';
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    provideRouter(appRoutes),
-    provideHttpClient(withInterceptors([loadingInterceptor]))
-  ]
-}).catch(err => console.error(err));
+  providers: [provideRouter(appRoutes), provideHttpClient(withInterceptors([loadingInterceptor]))],
+}).catch((err) => console.error(err));

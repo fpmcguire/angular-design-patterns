@@ -2,7 +2,7 @@
   RewriteEngine On
   # For subdirectory: /angular-design-patterns/
   RewriteBase /angular-design-patterns/
-  
+
   # Don't rewrite if it's a real file or directory
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
