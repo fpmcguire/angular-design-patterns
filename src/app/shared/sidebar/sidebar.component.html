@@ -1,41 +1,41 @@
-<nav class="sidebar">
-  <a routerLink="/patterns" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+<nav class="sidebar" data-testid="app-sidebar-nav">
+  <a routerLink="/patterns" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+    data-testid="app-sidebar-patterns-link">
     🧩 Angular Patterns
   </a>
 
-  <a routerLink="/classic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <a routerLink="/classic" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+    data-testid="app-sidebar-classic-link">
     📚 Classic GoF
   </a>
 
-  <a routerLink="/solid" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <a routerLink="/solid" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+    data-testid="app-sidebar-solid-link">
     🧱 S.O.L.I.D.
   </a>
 
-  <a routerLink="/grasp" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <a routerLink="/grasp" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+    data-testid="app-sidebar-grasp-link">
     🧠 GRASP
   </a>
 
-  <a routerLink="/clean-code" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <a routerLink="/clean-code" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+    data-testid="app-sidebar-clean-code-link">
     ✏️ Clean Code
   </a>
 
-  <a
-    routerLink="/frontend-architecture"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-  >
+  <a routerLink="/frontend-architecture" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+    data-testid="app-sidebar-frontend-architecture-link">
     🏗️ FE Architecture
   </a>
 
-  <a routerLink="/reactive" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <a routerLink="/reactive" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+    data-testid="app-sidebar-reactive-link">
     🔄 Reactive
   </a>
 
-  <a
-    routerLink="/architecture"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-  >
+  <a routerLink="/architecture" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+    data-testid="app-sidebar-architecture-link">
     🏛️ Architecture
   </a>
 </nav>

@@ -1,8 +1,18 @@
 import { test, expect } from '@playwright/test';
 
+async function dismissCookieBannerIfVisible(page: import('@playwright/test').Page): Promise<void> {
+  const acceptButton = page.getByRole('button', { name: 'Accept' });
+  const isVisible = await acceptButton.isVisible().catch(() => false);
+
+  if (isVisible) {
+    await acceptButton.click();
+  }
+}
+
 test.describe('Patterns Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/patterns');
+    await dismissCookieBannerIfVisible(page);
   });
 
   test('should display patterns page with title and intro', async ({ page }) => {
@@ -92,9 +102,13 @@ test.describe('Patterns Page', () => {
     // Wait for navigation
     await page.waitForLoadState('networkidle');
 
-    // Verify we navigated to a detail page (URL changed)
-    expect(page.url()).toContain('/patterns/');
-    expect(page.url()).not.toMatch(/\/patterns$/);
+    // Verify detail page content is rendered
+    await expect(page.getByTestId('pattern-detail-container')).toBeVisible();
+    await expect(page.getByTestId('pattern-detail-title')).toBeVisible();
+    await expect(page.getByTestId('pattern-detail-back-link')).toHaveAttribute(
+      'href',
+      /\/patterns$/,
+    );
   });
 
   test('should display star ratings when available', async ({ page }) => {
