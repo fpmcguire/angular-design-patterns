@@ -1,0 +1,86 @@
+@use 'tokens' as t;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(17, 24, 39, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 2000;
+}
+
+.panel {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 1.35rem;
+  background: t.$color-bg-card;
+  color: t.$color-text-primary;
+  border-radius: t.$radius-card;
+  border: 1px solid t.$color-border;
+  box-shadow: t.$shadow-card-hover;
+  min-width: 15rem;
+}
+
+.spinner {
+  position: relative;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: inline-block;
+  animation: orbit 1s linear infinite;
+}
+
+.dot {
+  position: absolute;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: t.$color-sidebar-active-bg;
+  box-shadow: 0 0 0.35rem rgba(249, 115, 22, 0.35);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dot:nth-child(1) {
+  transform: translate(-50%, -50%) translateX(0.95rem);
+}
+
+.dot:nth-child(2) {
+  transform: translate(-50%, -50%) rotate(120deg) translateX(0.95rem);
+  opacity: 0.7;
+}
+
+.dot:nth-child(3) {
+  transform: translate(-50%, -50%) rotate(240deg) translateX(0.95rem);
+  opacity: 0.4;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+.message {
+  font-size: 0.85rem;
+  color: t.$color-text-secondary;
+}
+
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2.2s;
+  }
+}

@@ -1,0 +1,129 @@
+[
+  {
+    "id": "dry",
+    "name": "DRY (Don’t Repeat Yourself)",
+    "category": "Duplication",
+    "shortDescription": "Avoid duplicating knowledge in multiple places.",
+    "description": "In Angular, DRY means extracting repeated logic into shared components, directives, pipes, or services instead of copying it across templates and classes.",
+    "exampleTs": [
+      "import { Pipe, PipeTransform } from '@angular/core';",
+      "",
+      "// Instead of repeating date formatting everywhere, we centralize it in a pipe.",
+      "@Pipe({",
+      "  name: 'friendlyDate',",
+      "  standalone: true",
+      "})",
+      "export class FriendlyDatePipe implements PipeTransform {",
+      "  transform(value: string | Date): string {",
+      "    const date = typeof value === 'string' ? new Date(value) : value;",
+      "    return date.toLocaleDateString();",
+      "  }",
+      "}"
+    ],
+    "exampleHtml": [
+      "<!-- DRY: reuse the same formatting everywhere -->",
+      "<p>Created: {{ createdAt | friendlyDate }}</p>",
+      "<p>Updated: {{ updatedAt | friendlyDate }}</p>"
+    ]
+  },
+  {
+    "id": "kiss",
+    "name": "KISS (Keep It Simple, Stupid)",
+    "category": "Simplicity",
+    "shortDescription": "Prefer simple, straightforward solutions.",
+    "description": "Angular components and services should be easy to read; avoid clever abstractions and meta-programming when a simple implementation will do.",
+    "exampleTs": [
+      "import { Component } from '@angular/core';",
+      "",
+      "// KISS: direct, readable logic in the component.",
+      "@Component({",
+      "  selector: 'app-counter-simple',",
+      "  standalone: true,",
+      "  template: `",
+      "    <button (click)=\"dec()\">-</button>",
+      "    <span>{{ count }}</span>",
+      "    <button (click)=\"inc()\">+</button>",
+      "  `",
+      "})",
+      "export class CounterSimpleComponent {",
+      "  count = 0;",
+      "  inc() { this.count++; }",
+      "  dec() { this.count--; }",
+      "}"
+    ]
+  },
+  {
+    "id": "yagni",
+    "name": "YAGNI (You Aren’t Gonna Need It)",
+    "category": "Over-Engineering",
+    "shortDescription": "Don’t add features or abstractions until they’re needed.",
+    "description": "Avoid adding global stores, complex caching, or generic abstractions before a real requirement exists; start simple and refactor when necessary.",
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "",
+      "// YAGNI: a simple service now; if requirements grow, introduce NgRx or more layers later.",
+      "@Injectable({ providedIn: 'root' })",
+      "export class FeatureToggleService {",
+      "  private flags = new Map<string, boolean>([",
+      "    ['newDashboard', true]",
+      "  ]);",
+      "",
+      "  isEnabled(flag: string): boolean {",
+      "    return !!this.flags.get(flag);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "law-of-demeter",
+    "name": "Law of Demeter",
+    "category": "Coupling",
+    "shortDescription": "“Don’t talk to strangers” – avoid deep call chains.",
+    "description": "Angular components should call their own injected services, not deeply nested objects (e.g., `service.a.b.c()`); introduce façade services instead.",
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "",
+      "@Injectable({ providedIn: 'root' })",
+      "export class OrdersApi {",
+      "  getOrders() {/* ... */}",
+      "}",
+      "",
+      "@Injectable({ providedIn: 'root' })",
+      "export class OrdersFacade {",
+      "  constructor(private api: OrdersApi) {}",
+      "  loadOrders() {",
+      "    return this.api.getOrders(); // component only knows OrdersFacade",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "immutability",
+    "name": "Immutability",
+    "category": "Immutability",
+    "shortDescription": "Prefer immutable data for predictability.",
+    "description": "Using immutable objects works great with OnPush change detection and avoids accidental shared mutations in Angular apps.",
+    "exampleTs": [
+      "import { Component, ChangeDetectionStrategy } from '@angular/core';",
+      "",
+      "@Component({",
+      "  selector: 'app-todo-immutable',",
+      "  standalone: true,",
+      "  changeDetection: ChangeDetectionStrategy.OnPush,",
+      "  template: `",
+      "    <button (click)=\"add()\">Add</button>",
+      "    <ul>",
+      "      <li @for=\"let todo of todos\">{{ todo }}</li>",
+      "    </ul>",
+      "  `",
+      "})",
+      "export class TodoImmutableComponent {",
+      "  todos: string[] = [];",
+      "",
+      "  add() {",
+      "    this.todos = [...this.todos, 'New todo']; // immutable update",
+      "  }",
+      "}"
+    ]
+  }
+]

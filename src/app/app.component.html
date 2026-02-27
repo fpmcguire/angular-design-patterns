@@ -1,0 +1,18 @@
+<app-loading-overlay [open]="isLoading()"></app-loading-overlay>
+
+<div class="app-shell">
+  <header class="app-header">
+    <app-header></app-header>
+  </header>
+
+  <main class="app-main">
+    <app-sidebar class="sidebar"></app-sidebar>
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <app-footer></app-footer>
+  </footer>
+</div>

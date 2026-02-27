@@ -1,0 +1,57 @@
+<div class="patterns">
+  <h2>{{ title() }}</h2>
+
+  <p class="patterns__intro">{{ intro() }}</p>
+
+  @if (introExtra()) {
+    <p class="patterns__intro">
+      {{ introExtra() }} <span class="pattern-legend__star">★ - ★★★★★</span>
+    </p>
+  }
+
+  @if (categories().length > 1) {
+    <div class="patterns__filters">
+      <button
+        type="button"
+        class="chip"
+        [class.chip--active]="selectedCategory() === null"
+        (click)="selectCategory(null)"
+      >
+        All
+      </button>
+
+      @for (cat of categories(); track cat) {
+        <button
+          type="button"
+          class="chip"
+          [class.chip--active]="selectedCategory() === cat"
+          (click)="selectCategory(cat)"
+        >
+          {{ cat }}
+        </button>
+      }
+    </div>
+  }
+
+  <div class="patterns__grid">
+    @for (item of filteredItems(); track item.id) {
+      <a class="pattern-card" [routerLink]="['/' + routeBase(), item.id]">
+        <h3>{{ item.name }}</h3>
+
+        <p class="pattern-card__category">
+          @if (item.letter) { ({{ item.letter }})&nbsp; }{{ item.category }}
+        </p>
+
+        <p class="pattern-card__description">{{ item.shortDescription }}</p>
+
+        @if (item.rating) {
+          <div class="pattern-card__stars">
+            @for (star of starsArray(item.rating); track $index) {
+              <span>★</span>
+            }
+          </div>
+        }
+      </a>
+    }
+  </div>
+</div>

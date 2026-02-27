@@ -1,0 +1,55 @@
+// =============================================================================
+// Design Tokens — single source of truth for the entire application
+// =============================================================================
+
+// Typography
+$font-family-base: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$font-size-base: 1rem;
+
+// Brand / Surface colours
+$color-bg-app:        #f3f4f6;
+$color-bg-card:       #ffffff;
+$color-bg-shell:      #111827;  // header, sidebar
+$color-bg-footer:     #f9fafb;
+$color-bg-code:       #111827;
+$color-bg-code-label: #020617;
+
+// Text colours
+$color-text-primary:   #111827;
+$color-text-secondary: #4b5563;
+$color-text-muted:     #9ca3af;
+$color-text-hint:      #6b7280;
+$color-text-on-dark:   #f9fafb;
+$color-text-on-dark-dim: #d1d5db;
+$color-text-code:      #e5e7eb;
+
+// Borders / Shadows
+$color-border:         #e5e7eb;
+$color-border-dark:    rgba(55, 65, 81, 0.9);
+$shadow-card:          0 1px 2px rgba(15, 23, 42, 0.04);
+$shadow-card-hover:    0 6px 16px rgba(15, 23, 42, 0.12);
+$shadow-code:          0 1px 4px rgba(15, 23, 42, 0.4);
+
+// Radii
+$radius-card: 0.75rem;
+$radius-chip: 999px;
+$radius-code: 0.75rem;
+$radius-sidebar-link: 0.5rem;
+
+// Filter chips
+$color-chip-bg:     #f9fafb;
+$color-chip-text:   #374151;
+$color-chip-border: #d1d5db;
+// Active accent is a CSS custom property — set per-section on the host element.
+// This allows each feature section to declare its own colour without duplicating
+// any SCSS. The fallback is the default blue used by the Angular Patterns section.
+$color-chip-active-fallback: #60a5fa;
+
+// Sidebar
+$color-sidebar-link:        #d1d5db;
+$color-sidebar-active-bg:   #f97316;
+$color-sidebar-active-text: #111827;
+$color-sidebar-hover-bg:    #1f2937;
+
+// Stars (GoF rating)
+$color-star: #22c55e;

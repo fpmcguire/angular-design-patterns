@@ -1,0 +1,28 @@
+@use 'tokens' as t;
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar a {
+  color: t.$color-sidebar-link;
+  text-decoration: none;
+  padding: 0.45rem 0.75rem;
+  border-radius: t.$radius-sidebar-link;
+  font-size: 0.95rem;
+  transition: background 0.15s, color 0.15s, transform 0.05s;
+
+  &:hover {
+    background: t.$color-sidebar-hover-bg;
+    color: t.$color-text-on-dark;
+    transform: translateX(1px);
+  }
+
+  &.active {
+    background: t.$color-sidebar-active-bg;
+    color: t.$color-sidebar-active-text;
+    font-weight: 600;
+  }
+}

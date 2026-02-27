@@ -1,0 +1,101 @@
+@use 'tokens' as t;
+
+.page {
+  max-width: 52rem;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin: 0 0 0.4rem;
+    font-size: 1.4rem;
+  }
+
+  p {
+    margin: 0;
+    color: t.$color-text-secondary;
+    max-width: 46rem;
+  }
+}
+
+.toc {
+  background: t.$color-bg-card;
+  border: 1px solid t.$color-border;
+  border-radius: t.$radius-card;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+
+  h3 {
+    margin: 0 0 0.4rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: t.$color-text-muted;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0 0 0 1rem;
+    list-style: none;
+  }
+
+  a {
+    font-size: 0.875rem;
+    color: t.$color-text-secondary;
+    text-decoration: none;
+    line-height: 1.8;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+section {
+  margin-bottom: 2rem;
+
+  h3 {
+    font-size: 1.1rem;
+    margin: 0 0 0.6rem;
+    border-bottom: 1px solid t.$color-border;
+    padding-bottom: 0.3rem;
+  }
+
+  p, ul {
+    color: t.$color-text-secondary;
+    line-height: 1.6;
+  }
+}
+
+// Code blocks — reuse shared token values directly
+.code-block {
+  margin: 0.75rem 0;
+  border-radius: t.$radius-code;
+  border: 1px solid t.$color-border;
+  background: t.$color-bg-code;
+  color: t.$color-text-code;
+  overflow: auto;
+  box-shadow: t.$shadow-code;
+}
+
+.code-block__label {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid t.$color-border-dark;
+  background: t.$color-bg-code-label;
+  color: t.$color-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+pre {
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}

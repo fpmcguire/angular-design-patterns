@@ -1,0 +1,105 @@
+// =============================================================================
+// Shared list-page styles
+// Consumed via @use 'list' by the PatternListComponent.
+// Section accent colour is driven by the CSS custom property --section-accent,
+// which each feature shell declares on its :host.
+// =============================================================================
+@use 'tokens' as t;
+
+.patterns h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+
+.patterns__intro {
+  margin: 0.4rem 0 1rem;
+  color: t.$color-text-secondary;
+  max-width: 46rem;
+}
+
+.patterns__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.chip {
+  border: 1px solid t.$color-chip-border;
+  border-radius: t.$radius-chip;
+  padding: 0.25rem 0.8rem;
+  font-size: 0.8rem;
+  background: t.$color-chip-bg;
+  cursor: pointer;
+  color: t.$color-chip-text;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+// Active state uses the section-level CSS custom property so every feature
+// section can have a unique accent with zero SCSS duplication.
+.chip--active {
+  background: var(--section-accent, #{t.$color-chip-active-fallback});
+  color: t.$color-bg-shell;
+  border-color: var(--section-accent, #{t.$color-chip-active-fallback});
+  font-weight: 600;
+}
+
+.patterns__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
+}
+
+.pattern-card {
+  position: relative;
+  display: block;
+  padding: 1.2rem 1rem 1.4rem;
+  border-radius: t.$radius-card;
+  background: t.$color-bg-card;
+  border: 1px solid t.$color-border;
+  box-shadow: t.$shadow-card;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.07s ease, box-shadow 0.07s ease, border-color 0.07s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: #bfdbfe;
+    box-shadow: t.$shadow-card-hover;
+  }
+
+  h3 {
+    margin: 0 0 0.3rem;
+    font-size: 1rem;
+  }
+}
+
+.pattern-card__category {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: t.$color-text-muted;
+}
+
+.pattern-card__description {
+  margin: 0.35rem 0 0;
+  font-size: 0.86rem;
+  color: t.$color-text-secondary;
+}
+
+// ★ Star rating — GoF only
+.pattern-legend__star {
+  font-size: 0.9rem;
+  color: t.$color-star;
+}
+
+.pattern-card__stars {
+  position: absolute;
+  bottom: 0.55rem;
+  right: 0.75rem;
+  font-size: 0.9rem;
+  color: t.$color-star;
+  display: flex;
+  gap: 0.1rem;
+}

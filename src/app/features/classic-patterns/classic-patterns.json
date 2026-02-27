@@ -1,0 +1,646 @@
+[
+  {
+    "id": "singleton",
+    "name": "Singleton",
+    "category": "Creational",
+    "shortDescription": "Ensure a class has only one instance and provide a global access point.",
+    "description": "In Angular, services provided in root (providedIn: \"root\") naturally behave as singletons shared across the whole application via dependency injection.",
+    "rating": 5,
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "",
+      "@Injectable({ providedIn: 'root' })",
+      "export class CounterService {",
+      "  private count = 0;",
+      "",
+      "  increment(): number {",
+      "    this.count++;",
+      "    console.log('CounterService count =', this.count);",
+      "    return this.count;",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "factory-method",
+    "name": "Factory Method",
+    "category": "Creational",
+    "shortDescription": "Define an interface for creating an object, but let subclasses decide which class to instantiate.",
+    "description": "Factory methods encapsulate object creation; in Angular, factory services can decide which concrete implementation to return based on configuration or environment.",
+    "rating": 4,
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "",
+      "export abstract class Logger {",
+      "  abstract log(message: string): void;",
+      "}",
+
+      "export class ConsoleLogger extends Logger {",
+      "  log(message: string): void {",
+      "    console.log('[ConsoleLogger]', message);",
+      "  }",
+      "}",
+
+      "export class SilentLogger extends Logger {",
+      "  log(_message: string): void {",
+      "    // no-op",
+      "  }",
+      "}",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class LoggerFactory {",
+      "  createLogger(debug: boolean): Logger {",
+      "    return debug ? new ConsoleLogger() : new SilentLogger();",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "abstract-factory",
+    "name": "Abstract Factory",
+    "category": "Creational",
+    "shortDescription": "Provide an interface for creating families of related objects without specifying their concrete classes.",
+    "description": "Angular’s injection tokens and configuration objects can serve as abstract factories, choosing which concrete implementations to expose across a feature.",
+    "rating": 3,
+    "exampleTs": [
+      "import { InjectionToken } from '@angular/core';",
+      "",
+      "export interface ButtonTheme {",
+      "  cssClass: string;",
+      "}",
+
+      "export const LIGHT_BUTTON_THEME: ButtonTheme = { cssClass: 'btn-light' };",
+      "export const DARK_BUTTON_THEME: ButtonTheme = { cssClass: 'btn-dark' };",
+      "",
+
+      "export const BUTTON_THEME = new InjectionToken<ButtonTheme>('BUTTON_THEME', {",
+      "  providedIn: 'root',",
+      "  factory: () => DARK_BUTTON_THEME // choose default family here",
+      "});"
+    ]
+  },
+  {
+    "id": "memento",
+    "name": "Memento",
+    "category": "Behavioral",
+    "shortDescription": "Capture and externalize an object’s internal state so it can be restored later.",
+    "description": "In Angular, you can snapshot component or form state into a memento object and later restore it, enabling undo/redo or draft-save flows.",
+    "rating": 2,
+    "exampleTs": [
+      "export interface FormMemento {",
+      "  value: any;",
+      "}",
+
+      "export class FormOriginator {",
+      "  constructor(private form: { value: any; setValue(v: any): void }) {}",
+
+      "  save(): FormMemento {",
+      "    return { value: { ...this.form.value } };",
+      "  }",
+
+      "  restore(memento: FormMemento): void {",
+      "    this.form.setValue(memento.value);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "observer",
+    "name": "Observer",
+    "category": "Behavioral",
+    "shortDescription": "Define a one-to-many dependency between objects.",
+    "description": "RxJS Observables used in Angular for HTTP, events, and state are a direct implementation of the Observer pattern.",
+    "rating": 5,
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "import { BehaviorSubject, Observable } from 'rxjs';",
+      "",
+      "@Injectable({ providedIn: 'root' })",
+      "export class ThemeStore {",
+      "  private themeSubject = new BehaviorSubject<'light' | 'dark'>('light');",
+      "  readonly theme$: Observable<'light' | 'dark'> = this.themeSubject.asObservable();",
+      "",
+      "  setTheme(theme: 'light' | 'dark') {",
+      "    this.themeSubject.next(theme);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "adapter",
+    "name": "Adapter",
+    "category": "Structural",
+    "shortDescription": "Convert the interface of a class into another interface clients expect.",
+    "description": "In Angular, you can use an adapter service to wrap third-party libraries or APIs, providing a consistent interface to the rest of your application.",
+    "rating": 4,
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "",
+      "export interface Logger {",
+      "  log(message: string): void;",
+      "}",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class ConsoleLogger implements Logger {",
+      "  log(message: string): void {",
+      "    console.log(message);",
+      "  }",
+      "}",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class LoggerAdapter implements Logger {",
+      "  constructor(private consoleLogger: ConsoleLogger) {}",
+
+      "  log(message: string): void {",
+      "    this.consoleLogger.log(message);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "bridge",
+    "name": "Bridge",
+    "category": "Structural",
+    "shortDescription": "Decouple an abstraction from its implementation so that the two can vary independently.",
+    "description": "Angular’s dependency injection allows you to bridge abstractions and implementations by injecting different services at runtime.",
+    "rating": 3,
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "",
+      "export interface Renderer {",
+      "  render(content: string): void;",
+      "}",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class HtmlRenderer implements Renderer {",
+      "  render(content: string): void {",
+      "    console.log('<div>' + content + '</div>');",
+      "  }",
+      "}",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class MarkdownRenderer implements Renderer {",
+      "  render(content: string): void {",
+      "    console.log('**' + content + '**');",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "composite",
+    "name": "Composite",
+    "category": "Structural",
+    "shortDescription": "Compose objects into tree structures to represent part-whole hierarchies.",
+    "description": "Composite can represent UI trees like menus or nested routes, where leaf and composite nodes share a common interface.",
+    "rating": 3,
+    "exampleTs": [
+      "export interface MenuComponent {",
+      "  render(indent?: number): void;",
+      "}",
+
+      "export class MenuItem implements MenuComponent {",
+      "  constructor(private label: string) {}",
+
+      "  render(indent: number = 0): void {",
+      "    console.log(Array(indent + 1).join(' ') + '- ' + this.label);",
+      "  }",
+      "}",
+
+      "export class MenuGroup implements MenuComponent {",
+      "  constructor(private label: string, private children: MenuComponent[]) {}",
+
+      "  render(indent: number = 0): void {",
+      "    console.log(Array(indent + 1).join(' ') + this.label + ':');",
+      "    this.children.forEach(child => child.render(indent + 2));",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "decorator",
+    "name": "Decorator",
+    "category": "Structural",
+    "shortDescription": "Attach additional responsibilities to an object dynamically.",
+    "description": "Angular’s class decorators (@Component, @Injectable) are a form of decoration; you can also create custom decorators to add behavior like logging or timing.",
+    "rating": 4,
+    "exampleTs": [
+      "import { Component } from '@angular/core';",
+      "",
+      "function LogCreation(target: Function) {",
+      "  console.log('Created component:', target.name);",
+      "}",
+
+      "@LogCreation",
+      "@Component({",
+      "  selector: 'app-decorated',",
+      "  standalone: true,",
+      "  template: '<p>Decorated component works!</p>'",
+      "})",
+      "export class DecoratedComponent {}"
+    ]
+  },
+  {
+    "id": "proxy",
+    "name": "Proxy",
+    "category": "Structural",
+    "shortDescription": "Provide a surrogate or placeholder for another object to control access to it.",
+    "description": "A proxy in Angular can be an HTTP interceptor or wrapper service that adds caching, logging, or auth checks before delegating to the real service.",
+    "rating": 4,
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "import { HttpClient } from '@angular/common/http';",
+      "import { Observable, shareReplay } from 'rxjs';",
+      "",
+      "export interface Settings {",
+      "  theme: string;",
+      "}",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class SettingsService {",
+      "  private settings$: Observable<Settings> | null = null;",
+      "",
+      "  constructor(private http: HttpClient) {}",
+
+      "  getSettings(): Observable<Settings> {",
+      "    if (!this.settings$) {",
+      "      this.settings$ = this.http.get<Settings>('/api/settings').pipe(shareReplay(1));",
+      "    }",
+      "    return this.settings$;",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "builder",
+    "name": "Builder",
+    "category": "Creational",
+    "shortDescription": "Separate construction of a complex object from its representation.",
+    "description": "A builder in Angular can assemble complex configuration objects (like HTTP query options or chart configs) step by step, exposing a readable fluent API.",
+    "rating": 3,
+    "exampleTs": [
+      "import { HttpParams } from '@angular/common/http';",
+      "",
+      "export class QueryBuilder {",
+      "  private params = new HttpParams();",
+      "",
+      "  withPage(page: number): this {",
+      "    this.params = this.params.set('page', String(page));",
+      "    return this;",
+      "  }",
+      "",
+      "  withPageSize(pageSize: number): this {",
+      "    this.params = this.params.set('pageSize', String(pageSize));",
+      "    return this;",
+      "  }",
+      "",
+      "  withFilter(term: string): this {",
+      "    this.params = this.params.set('search', term);",
+      "    return this;",
+      "  }",
+      "",
+      "  build(): HttpParams {",
+      "    return this.params;",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "prototype",
+    "name": "Prototype",
+    "category": "Creational",
+    "shortDescription": "Specify the kind of objects to create using a prototypical instance, and create new objects by copying this prototype.",
+    "description": "In Angular/TS you can implement clone methods or use utilities to create copies of configuration prototypes to avoid manual reconfiguration.",
+    "rating": 2,
+    "exampleTs": [
+      "export interface WidgetConfig {",
+      "  color: string;",
+      "  size: 'sm' | 'md' | 'lg';",
+      "}",
+
+      "export const DEFAULT_WIDGET: WidgetConfig = {",
+      "  color: 'blue',",
+      "  size: 'md'",
+      "};",
+
+      "export function cloneWidgetConfig(overrides: Partial<WidgetConfig>): WidgetConfig {",
+      "  return { ...DEFAULT_WIDGET, ...overrides };",
+      "}"
+    ]
+  },
+  {
+    "id": "flyweight",
+    "name": "Flyweight",
+    "category": "Structural",
+    "shortDescription": "Use sharing to support large numbers of fine-grained objects efficiently.",
+    "description": "Flyweight in Angular might appear as caching of immutable configuration or icon definitions, reusing shared objects instead of recreating them.",
+    "rating": 1,
+    "exampleTs": [
+      "export interface IconDefinition {",
+      "  name: string;",
+      "  svgPath: string;",
+      "}",
+
+      "const iconCache = new Map<string, IconDefinition>();",
+
+      "export function getIcon(name: string): IconDefinition {",
+      "  let icon = iconCache.get(name);",
+      "  if (!icon) {",
+      "    icon = { name: name, svgPath: '<svg>...</svg>' };",
+      "    iconCache.set(name, icon);",
+      "  }",
+      "  return icon;",
+      "}"
+    ]
+  },
+  {
+    "id": "chain-of-responsibility",
+    "name": "Chain of Responsibility",
+    "category": "Behavioral",
+    "shortDescription": "Pass a request along a chain of handlers until one handles it.",
+    "description": "In Angular, you can model request processing as a chain of functions or services that each decide whether to handle a command or pass it on.",
+    "rating": 4,
+    "exampleTs": [
+      "export interface Handler {",
+      "  setNext(handler: Handler): Handler;",
+      "  handle(request: string): void;",
+      "}",
+
+      "export abstract class BaseHandler implements Handler {",
+      "  private next: Handler | null = null;",
+      "",
+      "  setNext(handler: Handler): Handler {",
+      "    this.next = handler;",
+      "    return handler;",
+      "  }",
+      "",
+      "  handle(request: string): void {",
+      "    if (this.next) {",
+      "      this.next.handle(request);",
+      "    }",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "facade",
+    "name": "Facade",
+    "category": "Structural",
+    "shortDescription": "Provide a unified interface to a set of interfaces in a subsystem.",
+    "description": "In Angular, a facade service can wrap NgRx store, repositories, and HTTP calls behind a simple, UI-friendly API.",
+    "rating": 5,
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "import { Observable } from 'rxjs';",
+      "",
+      "export interface Product {",
+      "  id: string;",
+      "  name: string;",
+      "}",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class ProductsApi {",
+      "  getAll(): Observable<Product[]> {",
+      "    // imagine real HTTP here",
+      "    throw new Error('Not implemented');",
+      "  }",
+      "}",
+
+      "@Injectable({ providedIn: 'root' })",
+      "export class ProductsFacade {",
+      "  constructor(private api: ProductsApi) {}",
+      "",
+      "  loadProducts(): Observable<Product[]> {",
+      "    return this.api.getAll();",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "command",
+    "name": "Command",
+    "category": "Behavioral",
+    "shortDescription": "Encapsulate a request as an object.",
+    "description": "Command-style services in Angular wrap user actions so components call simple methods like \"execute\" instead of knowing how the action is implemented.",
+    "rating": 3,
+    "exampleTs": [
+      "export interface Command {",
+      "  execute(): void;",
+      "}",
+
+      "export class LogCommand implements Command {",
+      "  execute(): void {",
+      "    console.log('LogCommand executed');",
+      "  }",
+      "}",
+
+      "export class CommandInvoker {",
+      "  run(command: Command) {",
+      "    command.execute();",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "interpreter",
+    "name": "Interpreter",
+    "category": "Behavioral",
+    "shortDescription": "Define a representation for a grammar and an interpreter for sentences in the language.",
+    "description": "An interpreter in Angular/TS might parse a small filter language or feature flag expression into an AST and evaluate it at runtime.",
+    "rating": 1,
+    "exampleTs": [
+      "export interface Expr {",
+      "  eval(context: Record<string, boolean>): boolean;",
+      "}",
+
+      "export class VariableExpr implements Expr {",
+      "  constructor(private name: string) {}",
+      "  eval(context: Record<string, boolean>): boolean {",
+      "    return !!context[this.name];",
+      "  }",
+      "}",
+
+      "export class AndExpr implements Expr {",
+      "  constructor(private left: Expr, private right: Expr) {}",
+      "  eval(context: Record<string, boolean>): boolean {",
+      "    return this.left.eval(context) && this.right.eval(context);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "iterator",
+    "name": "Iterator",
+    "category": "Behavioral",
+    "shortDescription": "Provide a way to access elements of an aggregate object sequentially without exposing its representation.",
+    "description": "TypeScript’s built-in iterators already support this pattern; you can implement custom iterators over collections or paged API results.",
+    "rating": 2,
+    "exampleTs": [
+      "export class NumberRange implements Iterable<number> {",
+      "  constructor(private start: number, private end: number) {}",
+      "",
+      "  [Symbol.iterator](): Iterator<number> {",
+      "    let current = this.start;",
+      "    const end = this.end;",
+      "    return {",
+      "      next(): IteratorResult<number> {",
+      "        if (current <= end) {",
+      "          return { value: current++, done: false };",
+      "        }",
+      "        return { value: undefined as any, done: true };",
+      "      }",
+      "    };",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "mediator",
+    "name": "Mediator",
+    "category": "Behavioral",
+    "shortDescription": "Define an object that encapsulates how a set of objects interact.",
+    "description": "A mediator service in Angular coordinates communication between components so they do not talk to each other directly.",
+    "rating": 4,
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "import { Subject } from 'rxjs';",
+      "",
+      "@Injectable({ providedIn: 'root' })",
+      "export class ChatMediator {",
+      "  private messageSubject = new Subject<string>();",
+      "  messages$ = this.messageSubject.asObservable();",
+      "",
+      "  send(message: string) {",
+      "    this.messageSubject.next(message);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "state",
+    "name": "State",
+    "category": "Behavioral",
+    "shortDescription": "Allow an object to alter its behavior when its internal state changes.",
+    "description": "You can model feature modes or workflows in Angular as state objects that implement the same interface but behave differently as state changes.",
+    "rating": 3,
+    "exampleTs": [
+      "export interface OrderState {",
+      "  pay(): void;",
+      "  ship(): void;",
+      "}",
+
+      "export class PendingState implements OrderState {",
+      "  pay(): void {",
+      "    console.log('Order paid, moving to Paid state');",
+      "  }",
+      "  ship(): void {",
+      "    console.log('Cannot ship: order not paid');",
+      "  }",
+      "}",
+
+      "export class PaidState implements OrderState {",
+      "  pay(): void {",
+      "    console.log('Already paid');",
+      "  }",
+      "  ship(): void {",
+      "    console.log('Order shipped');",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "strategy",
+    "name": "Strategy",
+    "category": "Behavioral",
+    "shortDescription": "Define a family of algorithms, encapsulate each one, and make them interchangeable.",
+    "description": "Angular’s DI makes it easy to swap strategy implementations using injection tokens or providers.",
+    "rating": 5,
+    "exampleTs": [
+      "import { Injectable, InjectionToken, Inject } from '@angular/core';",
+      "",
+      "export interface PaymentStrategy {",
+      "  pay(amount: number): void;",
+      "}",
+
+      "@Injectable()",
+      "export class PaypalStrategy implements PaymentStrategy {",
+      "  pay(amount: number): void {",
+      "    console.log('Pay with PayPal:', amount);",
+      "  }",
+      "}",
+
+      "@Injectable()",
+      "export class StripeStrategy implements PaymentStrategy {",
+      "  pay(amount: number): void {",
+      "    console.log('Pay with Stripe:', amount);",
+      "  }",
+      "}",
+
+      "export const PAYMENT_STRATEGY = new InjectionToken<PaymentStrategy>('PAYMENT_STRATEGY');",
+      "",
+      "@Injectable({ providedIn: 'root' })",
+      "export class CheckoutService {",
+      "  constructor(@Inject(PAYMENT_STRATEGY) private strategy: PaymentStrategy) {}",
+      "",
+      "  checkout(total: number) {",
+      "    this.strategy.pay(total);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "template-method",
+    "name": "Template Method",
+    "category": "Behavioral",
+    "shortDescription": "Define the skeleton of an algorithm in a base class and let subclasses override steps.",
+    "description": "Abstract base components/services in Angular can implement common flows while subclasses customize specific operations.",
+    "rating": 3,
+    "exampleTs": [
+      "import { OnInit } from '@angular/core';",
+      "import { Observable } from 'rxjs';",
+      "",
+      "export abstract class DataLoader<T> implements OnInit {",
+      "  data: T | null = null;",
+      "",
+      "  ngOnInit(): void {",
+      "    this.load().subscribe(value => (this.data = value));",
+      "  }",
+      "",
+      "  protected abstract load(): Observable<T>;",
+      "}",
+      ""
+    ]
+  },
+  {
+    "id": "visitor",
+    "name": "Visitor",
+    "category": "Behavioral",
+    "shortDescription": "Represent an operation to be performed on elements of an object structure.",
+    "description": "Visitor can be used in Angular/TS for AST-like structures (e.g. form schema or dynamic UI definitions) where you apply different operations without changing node classes.",
+    "rating": 1,
+    "exampleTs": [
+      "export interface NodeVisitor {",
+      "  visitText(node: TextNode): void;",
+      "  visitContainer(node: ContainerNode): void;",
+      "}",
+
+      "export interface Node {",
+      "  accept(visitor: NodeVisitor): void;",
+      "}",
+
+      "export class TextNode implements Node {",
+      "  constructor(public text: string) {}",
+      "  accept(visitor: NodeVisitor): void {",
+      "    visitor.visitText(this);",
+      "  }",
+      "}",
+
+      "export class ContainerNode implements Node {",
+      "  constructor(public children: Node[]) {}",
+      "  accept(visitor: NodeVisitor): void {",
+      "    visitor.visitContainer(this);",
+      "    this.children.forEach(c => c.accept(visitor));",
+      "  }",
+      "}"
+    ]
+  }
+]

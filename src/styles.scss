@@ -1,0 +1,13 @@
+@use 'tokens' as t;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: t.$color-bg-app;
+  font-family: t.$font-family-base;
+}

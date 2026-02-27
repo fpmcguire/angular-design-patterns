@@ -1,0 +1,50 @@
+@if (item(); as entry) {
+  <a [routerLink]="backRoute()" class="back-link">← back to {{ backLabel() }}</a>
+
+  <header class="detail-header">
+    <h2>{{ entry.name }}</h2>
+    <span class="detail-header__category">
+      @if (entry.letter) { ({{ entry.letter }})&nbsp; }{{ entry.category }}
+    </span>
+    @if (entry.rating) {
+      <div class="stars">
+        @for (star of starsArray(entry.rating); track $index) {
+          <span>★</span>
+        }
+      </div>
+    }
+  </header>
+
+  <p class="detail-description">{{ entry.description }}</p>
+
+  <section class="detail-examples">
+    @if (entry.exampleTs || entry.exampleHtml) {
+      <h3>Angular / TypeScript Example</h3>
+
+      @if (entry.exampleTs) {
+        <div class="code-block">
+          <div class="code-block__label">TypeScript</div>
+          <pre><code>{{ entry.exampleTs }}</code></pre>
+        </div>
+      }
+
+      @if (entry.exampleHtml) {
+        <div class="code-block">
+          <div class="code-block__label">Template</div>
+          <pre><code>{{ entry.exampleHtml }}</code></pre>
+        </div>
+      }
+
+      @if (hint()) {
+        <p class="hint">{{ hint() }}</p>
+      }
+    } @else {
+      @if (noExampleHint()) {
+        <p class="hint">{{ noExampleHint() }}</p>
+      }
+    }
+  </section>
+} @else {
+  <a [routerLink]="backRoute()" class="back-link">← back to {{ backLabel() }}</a>
+  <p>Entry not found.</p>
+}

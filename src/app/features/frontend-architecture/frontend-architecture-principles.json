@@ -1,0 +1,115 @@
+[
+  {
+    "id": "unidirectional-flow",
+    "name": "Unidirectional Data Flow",
+    "category": "Data Flow",
+    "shortDescription": "Data flows down, events flow up.",
+    "description": "In Angular, parent components pass data down via @Input() or selectors, while child components emit events via @Output() or store actions, making the flow easy to reason about.",
+    "exampleTs": [
+      "import { Component, EventEmitter, Input, Output } from '@angular/core';",
+      "",
+      "@Component({",
+      "  selector: 'app-todo-list',",
+      "  standalone: true,",
+      "  template: `",
+      "    <ul>",
+      "      <li @for=\"let todo of todos\">",
+      "        <span>{{ todo }}</span>",
+      "        <button (click)=\"remove.emit(todo)\">x</button>",
+      "      </li>",
+      "    </ul>",
+      "  `",
+      "})",
+      "export class TodoListComponent {",
+      "  @Input() todos: string[] = [];",
+      "  @Output() remove = new EventEmitter<string>();",
+      "}"
+    ]
+  },
+  {
+    "id": "single-source-of-truth",
+    "name": "Single Source of Truth",
+    "category": "State Management",
+    "shortDescription": "Each piece of state lives in exactly one place.",
+    "description": "Avoid duplicating the same state in multiple services or components; instead, centralize it (e.g., in a facade or store) and derive everything else from there.",
+    "exampleTs": [
+      "import { Injectable } from '@angular/core';",
+      "import { BehaviorSubject } from 'rxjs';",
+      "",
+      "// Single source of truth for auth state",
+      "@Injectable({ providedIn: 'root' })",
+      "export class AuthStore {",
+      "  private readonly userSubject = new BehaviorSubject<string | null>(null);",
+      "  readonly user$ = this.userSubject.asObservable();",
+      "",
+      "  setUser(user: string | null) {",
+      "    this.userSubject.next(user);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "state-colocation",
+    "name": "State Colocation",
+    "category": "State Management",
+    "shortDescription": "Keep state as close as possible to where it is used.",
+    "description": "Use component-local state for purely local concerns, feature stores for feature-wide state, and global stores only for truly global concerns.",
+    "exampleTs": [
+      "import { Component } from '@angular/core';",
+      "",
+      "@Component({",
+      "  selector: 'app-tabs',",
+      "  standalone: true,",
+      "  template: `",
+      "    <button (click)=\"active = 'overview'\">Overview</button>",
+      "    <button (click)=\"active = 'details'\">Details</button>",
+      "",
+      "    <section @if=\"active === 'overview'\">Overview content</section>",
+      "    <section @if=\"active === 'details'\">Details content</section>",
+      "  `",
+      "})",
+      "export class TabsComponent {",
+      "  // colocated UI state, no need for a global service/store",
+      "  active: 'overview' | 'details' = 'overview';",
+      "}"
+    ]
+  },
+  {
+    "id": "smart-dumb",
+    "name": "Separation of Concerns (Smart vs. Dumb Components)",
+    "category": "Boundaries",
+    "shortDescription": "Containers fetch and orchestrate; presentational components focus on UI.",
+    "description": "Smart components own data loading, orchestration, and navigation, while dumb components receive data and emit events, staying purely presentational.",
+    "exampleTs": [
+      "import { Component } from '@angular/core';",
+      "",
+      "@Component({",
+      "  selector: 'app-users-container',",
+      "  standalone: true,",
+      "  template: `",
+      "    <app-user-list",
+      "      [users]=\"['Ana', 'Bruno']\"",
+      "      (selectUser)=\"onSelect($event)\">",
+      "    </app-user-list>",
+      "  `",
+      "})",
+      "export class UsersContainerComponent {",
+      "  onSelect(user: string) {",
+      "    console.log('Selected', user);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "explicit-boundaries",
+    "name": "Explicit Feature Boundaries",
+    "category": "Boundaries",
+    "shortDescription": "Group code by feature with clear public APIs.",
+    "description": "Organize Angular apps into feature folders/libraries (auth, orders, dashboard) and expose only facades/public services, keeping internals private.",
+    "exampleTs": [
+      "// Example: 'orders' feature exports only OrdersFacade as public API",
+      "export * from './lib/orders-facade.service';",
+      "// internal services/components stay internal to the feature library."
+    ]
+  }
+]
