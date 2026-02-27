@@ -1,57 +1,49 @@
-<div class="patterns">
-  <h2>{{ title() }}</h2>
+<div class="patterns" data-testid="patterns-container">
+  <h2 data-testid="patterns-title">{{ title() }}</h2>
 
-  <p class="patterns__intro">{{ intro() }}</p>
+  <p class="patterns__intro" data-testid="patterns-intro">{{ intro() }}</p>
 
   @if (introExtra()) {
-    <p class="patterns__intro">
-      {{ introExtra() }} <span class="pattern-legend__star">★ - ★★★★★</span>
-    </p>
+  <p class="patterns__intro" data-testid="patterns-intro-extra">
+    {{ introExtra() }} <span class="pattern-legend__star">★ - ★★★★★</span>
+  </p>
   }
 
   @if (categories().length > 1) {
-    <div class="patterns__filters">
-      <button
-        type="button"
-        class="chip"
-        [class.chip--active]="selectedCategory() === null"
-        (click)="selectCategory(null)"
-      >
-        All
-      </button>
+  <div class="patterns__filters" data-testid="patterns-filters">
+    <button type="button" class="chip" [class.chip--active]="selectedCategory() === null" (click)="selectCategory(null)"
+      data-testid="patterns-filter-all-button">
+      All
+    </button>
 
-      @for (cat of categories(); track cat) {
-        <button
-          type="button"
-          class="chip"
-          [class.chip--active]="selectedCategory() === cat"
-          (click)="selectCategory(cat)"
-        >
-          {{ cat }}
-        </button>
-      }
-    </div>
+    @for (cat of categories(); track cat) {
+    <button type="button" class="chip" [class.chip--active]="selectedCategory() === cat" (click)="selectCategory(cat)"
+      [attr.data-testid]="'patterns-filter-' + cat.toLowerCase().replace(/\s+/g, '-') + '-button'">
+      {{ cat }}
+    </button>
+    }
+  </div>
   }
 
-  <div class="patterns__grid">
+  <div class="patterns__grid" data-testid="patterns-grid">
     @for (item of filteredItems(); track item.id) {
-      <a class="pattern-card" [routerLink]="['/' + routeBase(), item.id]">
-        <h3>{{ item.name }}</h3>
+    <a class="pattern-card" [routerLink]="['/' + routeBase(), item.id]" data-testid="pattern-card">
+      <h3 data-testid="pattern-card-title">{{ item.name }}</h3>
 
-        <p class="pattern-card__category">
-          @if (item.letter) { ({{ item.letter }})&nbsp; }{{ item.category }}
-        </p>
+      <p class="pattern-card__category" data-testid="pattern-card-category">
+        @if (item.letter) { ({{ item.letter }})&nbsp; }{{ item.category }}
+      </p>
 
-        <p class="pattern-card__description">{{ item.shortDescription }}</p>
+      <p class="pattern-card__description" data-testid="pattern-card-description">{{ item.shortDescription }}</p>
 
-        @if (item.rating) {
-          <div class="pattern-card__stars">
-            @for (star of starsArray(item.rating); track $index) {
-              <span>★</span>
-            }
-          </div>
+      @if (item.rating) {
+      <div class="pattern-card__stars" data-testid="pattern-card-stars">
+        @for (star of starsArray(item.rating); track $index) {
+        <span>★</span>
         }
-      </a>
+      </div>
+      }
+    </a>
     }
   </div>
 </div>

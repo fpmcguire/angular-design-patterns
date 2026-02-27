@@ -11,4 +11,10 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
     video: 'retain-on-failure', // Record video on failure
   },
+  webServer: {
+    command: 'npm start',
+    url: 'http://localhost:4200',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000,
+  },
 });
