@@ -31,6 +31,9 @@
       <li>
         <a href="" (click)="onTocClick($event, 'cross-cutting')"> Cross-cutting concerns </a>
       </li>
+      <li>
+        <a href="" (click)="onTocClick($event, 'project-structure')"> This project in practice </a>
+      </li>
     </ul>
   </nav>
 
@@ -128,6 +131,26 @@
     <div class="code-block">
       <div class="code-block__label">Auth interceptor</div>
       <pre><code [innerText]="codeAuthInterceptor"></code></pre>
+    </div>
+  </section>
+
+  <section id="project-structure">
+    <h3>This project in practice</h3>
+    <p>
+      This Angular Design Patterns catalog demonstrates these architectural principles in action.
+      Each feature (Patterns, SOLID, GRASP, etc.) follows the same structure:
+    </p>
+    <ul>
+      <li><strong>Feature folder</strong> – isolated business domain</li>
+      <li><strong>-list.component.ts</strong> – reuses shared <code>PatternListComponent</code></li>
+      <li><strong>.data.ts</strong> – pattern content (reusable, testable)</li>
+      <li><strong>.data.json</strong> – backup format for future API migration</li>
+      <li><strong>-detail.component.ts</strong> – routed detail view</li>
+    </ul>
+
+    <div class="code-block">
+      <div class="code-block__label">Project folder structure</div>
+      <pre><code [innerText]="projectStructure"></code></pre>
     </div>
   </section>
 </div>

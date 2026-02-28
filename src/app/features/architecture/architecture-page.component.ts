@@ -1,6 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { ViewportScroller } from '@angular/common';
+import { ARCHITECTURE_EXAMPLES } from './architecture.data';
 
+/**
+ * Architecture page component.
+ *
+ * DESIGN NOTES:
+ * - Template is 133+ lines → separate .html/.scss files for readability
+ * - Code examples are static, reusable content → extracted to architecture.data.ts
+ * - This separation allows future migration to markdown or backend API
+ */
 @Component({
   selector: 'app-architecture-page',
   standalone: true,
@@ -11,79 +20,19 @@ import { ViewportScroller } from '@angular/common';
 export class ArchitecturePageComponent {
   private readonly viewport = inject(ViewportScroller);
 
+  // Code examples imported from separate data file (see architecture.data.ts)
+  readonly codeFolderLayout = ARCHITECTURE_EXAMPLES.codeFolderLayout;
+  readonly codeFeatureStructure = ARCHITECTURE_EXAMPLES.codeFeatureStructure;
+  readonly codeFacade = ARCHITECTURE_EXAMPLES.codeFacade;
+  readonly codeRepository = ARCHITECTURE_EXAMPLES.codeRepository;
+  readonly codeRoutes = ARCHITECTURE_EXAMPLES.codeRoutes;
+  readonly codeAuthInterceptor = ARCHITECTURE_EXAMPLES.codeAuthInterceptor;
+  readonly projectStructure = ARCHITECTURE_EXAMPLES.projectStructure;
+
   onTocClick(event: Event, fragment: string): void {
     event.preventDefault();
     if (typeof document !== 'undefined') {
       document.getElementById(fragment)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
-
-  readonly codeFolderLayout = `
-src/
-  app/
-    core/               # app shell, layout, global providers
-    features/
-      orders/
-      auth/
-      dashboard/
-    shared/
-      ui/
-      data-access/
-      util/`.trim();
-
-  readonly codeFeatureStructure = `
-features/
-  orders/
-    orders-page.component.ts
-    orders-routing.ts
-    orders.facade.ts
-    orders.store.ts
-    orders.api.ts
-  auth/
-    login-page.component.ts
-    auth.guard.ts
-    auth.api.ts`.trim();
-
-  readonly codeFacade = `
-@Injectable({ providedIn: 'root' })
-export class OrdersFacade {
-  readonly orders   = toSignal(this.store.select(selectOrders));
-  readonly loading  = toSignal(this.store.select(selectOrdersLoading));
-
-  constructor(private store: Store) {}
-
-  load(): void {
-    this.store.dispatch(OrdersActions.load());
-  }
-}`.trim();
-
-  readonly codeRepository = `
-@Injectable({ providedIn: 'root' })
-export class OrdersRepository {
-  private readonly http = inject(HttpClient);
-
-  getAll(): Observable<Order[]> {
-    return this.http.get<OrderDto[]>('/api/orders').pipe(
-      map(dtos => dtos.map(dtoToOrderModel))
-    );
-  }
-}`.trim();
-
-  readonly codeRoutes = `
-export const routes: Routes = [
-  {
-    path: 'orders',
-    loadChildren: () =>
-      import('./features/orders/orders.routes').then(m => m.ORDERS_ROUTES),
-  },
-];`.trim();
-
-  readonly codeAuthInterceptor = `
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = inject(AuthService).token;
-  const authReq = token
-    ? req.clone({ setHeaders: { Authorization: \`Bearer \${token}\` } })
-    : req;
-  return next(authReq);
-};`.trim();
 }

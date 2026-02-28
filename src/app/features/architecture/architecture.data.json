@@ -1,0 +1,8 @@
+{
+  "codeFolderLayout": "src/\n  app/\n    core/               # app shell, layout, global providers\n    features/\n      orders/\n      auth/\n      dashboard/\n    shared/\n      ui/\n      data-access/\n      util/",
+  "codeFeatureStructure": "features/\n  orders/\n    orders-page.component.ts\n    orders-routing.ts\n    orders.facade.ts\n    orders.store.ts\n    orders.api.ts\n  auth/\n    login-page.component.ts\n    auth.guard.ts\n    auth.api.ts",
+  "codeFacade": "@Injectable({ providedIn: 'root' })\nexport class OrdersFacade {\n  readonly orders   = toSignal(this.store.select(selectOrders));\n  readonly loading  = toSignal(this.store.select(selectOrdersLoading));\n\n  constructor(private store: Store) {}\n\n  load(): void {\n    this.store.dispatch(OrdersActions.load());\n  }\n}",
+  "codeRepository": "@Injectable({ providedIn: 'root' })\nexport class OrdersRepository {\n  private readonly http = inject(HttpClient);\n\n  getAll(): Observable<Order[]> {\n    return this.http.get<OrderDto[]>('/api/orders').pipe(\n      map(dtos => dtos.map(dtoToOrderModel))\n    );\n  }\n}",
+  "codeRoutes": "export const routes: Routes = [\n  {\n    path: 'orders',\n    loadChildren: () =>\n      import('./features/orders/orders.routes').then(m => m.ORDERS_ROUTES),\n  },\n];",
+  "codeAuthInterceptor": "export const authInterceptor: HttpInterceptorFn = (req, next) => {\n  const token = inject(AuthService).token;\n  const authReq = token\n    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })\n    : req;\n  return next(authReq);\n};"
+}
