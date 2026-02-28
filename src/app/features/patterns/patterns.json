@@ -422,7 +422,10 @@
     "name": "Service with BehaviorSubject",
     "category": "State & Data",
     "shortDescription": "Shared state in a service with BehaviorSubject.",
-    "description": "Expose app-wide or feature-wide state in a service. In Angular v21+, prefer signals over BehaviorSubject where possible for simpler, more performant state management. Use BehaviorSubject primarily for RxJS composition patterns.",
+    "description": "Expose app-wide or feature-wide state in a service. In Angular v21+, prefer signals over BehaviorSubject where possible for simpler, more performant state management. Use BehaviorSubject primarily for RxJS composition patterns. See \"Signal-based State Service\" for the modern default pattern.",
+    "relatedPatterns": [
+      "signal-state-service"
+    ],
     "exampleTs": [
       "import { Injectable, signal } from \"@angular/core\";",
       "",
@@ -441,6 +444,43 @@
       "",
       "  logout() {",
       "    this.user.set(null);",
+      "  }",
+      "}"
+    ]
+  },
+  {
+    "id": "signal-state-service",
+    "name": "Signal-based State Service",
+    "category": "State & Data",
+    "shortDescription": "Use signals and computed for local or shared app state.",
+    "description": "In Angular v21, signals are a first-class state management option for many feature and app-level scenarios. A service can expose writable signals, computed derived state, and intent-style methods to update state predictably without boilerplate reducers.",
+    "exampleTs": [
+      "import { Injectable, computed, signal } from \"@angular/core\";",
+      "",
+      "interface Todo {",
+      "  id: number;",
+      "  title: string;",
+      "  done: boolean;",
+      "}",
+      "",
+      "@Injectable({ providedIn: \"root\" })",
+      "export class TodosState {",
+      "  private readonly todos = signal<Todo[]>([]);",
+      "",
+      "  readonly items = this.todos.asReadonly();",
+      "  readonly pendingCount = computed(() => this.todos().filter(t => !t.done).length);",
+      "",
+      "  add(title: string) {",
+      "    this.todos.update(current => [",
+      "      ...current,",
+      "      { id: Date.now(), title, done: false }",
+      "    ]);",
+      "  }",
+      "",
+      "  toggle(id: number) {",
+      "    this.todos.update(current =>",
+      "      current.map(todo => (todo.id === id ? { ...todo, done: !todo.done } : todo))",
+      "    );",
       "  }",
       "}"
     ]
