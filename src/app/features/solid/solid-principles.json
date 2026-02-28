@@ -120,7 +120,7 @@
     "shortDescription": "High-level modules should not depend on low-level modules; both should depend on abstractions.",
     "description": "Angular’s DI system is a direct implementation of DIP: you inject abstractions (interfaces via tokens) instead of new-ing up concrete classes.",
     "exampleTs": [
-      "import { InjectionToken, Inject, Injectable } from '@angular/core';",
+      "import { InjectionToken, inject, Injectable } from '@angular/core';",
       "",
       "export interface Clock {",
       "  now(): Date;",
@@ -137,7 +137,7 @@
       "",
       "@Injectable({ providedIn: 'root' })",
       "export class ReportService {",
-      "  constructor(@Inject(CLOCK) private clock: Clock) {}",
+      "  private readonly clock = inject(CLOCK);",
       "",
       "  generate() {",
       "    const timestamp = this.clock.now();",

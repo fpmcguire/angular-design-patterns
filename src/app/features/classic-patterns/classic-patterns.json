@@ -233,7 +233,6 @@
       "@LogCreation",
       "@Component({",
       "  selector: 'app-decorated',",
-      "  standalone: true,",
       "  template: '<p>Decorated component works!</p>'",
       "})",
       "export class DecoratedComponent {}"
@@ -247,7 +246,7 @@
     "description": "A proxy in Angular can be an HTTP interceptor or wrapper service that adds caching, logging, or auth checks before delegating to the real service.",
     "rating": 4,
     "exampleTs": [
-      "import { Injectable } from '@angular/core';",
+      "import { Injectable, inject } from '@angular/core';",
       "import { HttpClient } from '@angular/common/http';",
       "import { Observable, shareReplay } from 'rxjs';",
       "",
@@ -257,9 +256,8 @@
 
       "@Injectable({ providedIn: 'root' })",
       "export class SettingsService {",
+      "  private readonly http = inject(HttpClient);",
       "  private settings$: Observable<Settings> | null = null;",
-      "",
-      "  constructor(private http: HttpClient) {}",
 
       "  getSettings(): Observable<Settings> {",
       "    if (!this.settings$) {",
@@ -555,7 +553,7 @@
     "description": "Angular’s DI makes it easy to swap strategy implementations using injection tokens or providers.",
     "rating": 5,
     "exampleTs": [
-      "import { Injectable, InjectionToken, Inject } from '@angular/core';",
+      "import { Injectable, inject, InjectionToken } from '@angular/core';",
       "",
       "export interface PaymentStrategy {",
       "  pay(amount: number): void;",
@@ -579,7 +577,7 @@
       "",
       "@Injectable({ providedIn: 'root' })",
       "export class CheckoutService {",
-      "  constructor(@Inject(PAYMENT_STRATEGY) private strategy: PaymentStrategy) {}",
+      "  private readonly strategy = inject(PAYMENT_STRATEGY);",
       "",
       "  checkout(total: number) {",
       "    this.strategy.pay(total);",
