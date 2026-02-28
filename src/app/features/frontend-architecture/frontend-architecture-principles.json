@@ -4,7 +4,7 @@
     "name": "Unidirectional Data Flow",
     "category": "Data Flow",
     "shortDescription": "Data flows down, events flow up.",
-    "description": "In Angular, parent components pass data down via @Input() or selectors, while child components emit events via @Output() or store actions, making the flow easy to reason about.",
+    "description": "In Angular v21+, parent components pass data down via input() functions, while child components emit events via output() functions or store actions, making the flow easy to reason about and type-safe.",
     "exampleTs": [
       "import { Component, input, output } from '@angular/core';",
       "",
@@ -32,7 +32,7 @@
     "name": "Single Source of Truth",
     "category": "State Management",
     "shortDescription": "Each piece of state lives in exactly one place.",
-    "description": "Avoid duplicating the same state in multiple services or components; instead, centralize it (e.g., in a facade or store) and derive everything else from there.",
+    "description": "Avoid duplicating the same state in multiple services or components; instead, centralize it using signals, stores, or facades. Derive all derived state using computed() and consume it throughout the app from this single source.",
     "exampleTs": [
       "import { Injectable } from '@angular/core';",
       "import { BehaviorSubject } from 'rxjs';",

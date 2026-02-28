@@ -4,7 +4,7 @@
     "name": "Streams as Source of Truth",
     "category": "Streams",
     "shortDescription": "Represent key pieces of state as Observables instead of ad-hoc fields.",
-    "description": "In a reactive Angular app, important state (users, filters, loading flags) is exposed as streams (e.g. users$) and the UI is derived from those streams using the async pipe, not manual mutation.",
+    "description": "In a modern Angular app, important state (users, filters, loading flags) should be exposed as signals or reactive streams. Use signals for simple state and async pipes in templates for observable streams. This ensures the UI is always derived from the source of truth.",
     "exampleTs": [
       "import { Injectable, signal } from '@angular/core';",
       "",
@@ -36,7 +36,7 @@
     "name": "Push over Pull",
     "category": "Streams",
     "shortDescription": "Push changes into streams and let consumers react, instead of pulling values on demand.",
-    "description": "Rather than imperatively asking for the latest data everywhere, emit changes into Subjects/Stores and consume them via async templates or derived streams.",
+    "description": "Rather than imperatively asking for data everywhere, use signals that automatically notify consumers when they change, or emit changes through observables/Subjects. This creates a declarative, reactive data flow.",
     "exampleTs": [
       "import { Injectable, signal, computed } from '@angular/core';",
       "",
@@ -178,7 +178,7 @@
     "name": "Lifecycle & Cleanup",
     "category": "Errors & Lifecycle",
     "shortDescription": "Ensure subscriptions are cleaned up when components are destroyed.",
-    "description": "While the async pipe handles cleanup for template subscriptions, manual subscriptions in components should use takeUntil, signal-based cleanup, or other strategies to avoid memory leaks.",
+    "description": "The async pipe automatically handles subscription cleanup. For manual subscriptions, use takeUntil, takeUntilDestroyed, or signal-based cleanup strategies to prevent memory leaks and ensure observables are unsubscribed when components are destroyed.",
     "exampleTs": [
       "import { Component, OnDestroy } from '@angular/core';",
       "import { Subject, interval, takeUntil } from 'rxjs';",
